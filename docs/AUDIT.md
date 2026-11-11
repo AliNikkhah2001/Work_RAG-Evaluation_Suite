@@ -18,7 +18,7 @@ Presumption: every prior eval asset is **untrusted** until live-validated.
 | `eval/run_e2e.py` | **Delete** | Drifted ports; incomplete |
 | `eval_clean.json` chunk UUIDs | **Invalid** | Live Hit@1/Hit@5 by ID = **0/20** after corpus rebuild |
 | `eval_clean.json` queries + answers | **Salvage via remap** | Remap expected IDs by searching with `expected_answer` text against live KB |
-| KB `kb_manager/evaluation/*` package | **Leave in KB** | Powers KB UI benchmarks; suite calls HTTP `/search/api` instead of importing KB internals |
+| KB `kb_manager/evaluation/*` package | **Removed** | KB UI proxies to Evaluation Suite (`EVAL_SUITE_URL`); suite calls HTTP `/search/api` only |
 
 ## Hit@k remapping rule (non-tautological)
 

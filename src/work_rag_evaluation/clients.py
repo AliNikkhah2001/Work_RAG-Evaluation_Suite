@@ -3,14 +3,24 @@
 from __future__ import annotations
 
 import json
+import os
 import uuid
 from typing import Any
 
 import httpx
 
-DEFAULT_ORCH = "http://127.0.0.1:8100/v1/chat/completions"
-DEFAULT_KB = "http://127.0.0.1:8000/search/api"
-DEFAULT_MODEL = "ics-helper-agent"
+# Prefer full endpoint URLs; fall back to service base + path for compose.
+_orch_base = os.environ.get("ORCH_BASE_URL", "http://127.0.0.1:8100").rstrip("/")
+_kb_base = os.environ.get("KB_BASE_URL", "http://127.0.0.1:8000").rstrip("/")
+DEFAULT_ORCH = os.environ.get(
+    "ORCH_CHAT_URL",
+    f"{_orch_base}/v1/chat/completions" if not _orch_base.endswith("/v1/chat/completions") else _orch_base,
+)
+DEFAULT_KB = os.environ.get(
+    "KB_SEARCH_URL",
+    f"{_kb_base}/search/api" if not _kb_base.endswith("/search/api") else _kb_base,
+)
+DEFAULT_MODEL = os.environ.get("EVAL_MODEL", "ics-helper-agent")
 
 
 class OrchClient:

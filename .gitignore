@@ -9,5 +9,5 @@ build/
 artifacts/*.json
 artifacts/*.md
 !artifacts/.gitkeep
-datasets/retrieval/eval_clean_remapped.json
+# remapped Hit@k goldens are committed (regenerate via scripts/remap_hitk_dataset.py)
 .DS_Store
