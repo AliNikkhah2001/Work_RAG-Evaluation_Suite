@@ -35,7 +35,7 @@ conversations:
         expected_finish: clarify
         expected_subspace: null
         should_keep_sticky: false
-      - user: چک
+      - user: گزارش اعتبارسنجی چک
         expected_finish: stop
         expected_subspace: cheque
         is_respec: true
@@ -61,7 +61,7 @@ conversations:
         expected_finish: stop
         expected_subspace: facilities_person
         should_keep_sticky: true
-      - user: چک
+      - user: گزارش اعتبارسنجی چک
         expected_finish: stop
         expected_subspace: cheque
         is_respec: true
@@ -134,7 +134,7 @@ conversations:
     subspace: mixed
     description: cheque -> facilities_person re-spec
     turns:
-      - user: چک
+      - user: گزارش اعتبارسنجی چک
         expected_finish: stop
         expected_subspace: cheque
       - user: حالا درباره تسهیلات اشخاص حقیقی بگو

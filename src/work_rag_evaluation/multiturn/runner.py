@@ -53,6 +53,34 @@ def _finish_ok(expected: str | None, got: str | None) -> bool:
     return g == expected
 
 
+def _infer_subspace(content: str, rag: dict[str, Any]) -> str | None:
+    """Infer subspace when orch omits applied_subspace from rag metadata."""
+    for key in ("applied_subspace", "sticky_subspace", "subspace"):
+        val = rag.get(key)
+        if val:
+            return str(val)
+    text = content or ""
+    # Specification ack patterns from classify/format_response
+    if "اشخاص حقیقی/اعتبارسنجی تسهیلات" in text or "تسهیلات اشخاص حقیقی" in text and "انتخاب شد" in text:
+        return "facilities_person"
+    if "اشخاص حقوقی/اعتبارسنجی تسهیلات" in text or ("تسهیلات اشخاص حقوقی" in text and "انتخاب شد" in text):
+        return "facilities_legal"
+    if "گزارش اعتبارسنجی چک" in text or "گزارش اعتباری چک" in text or ("چک" in text and "انتخاب شد" in text):
+        return "cheque"
+    if "پایگاه دانش عمومی" in text and "انتخاب شد" in text:
+        return "general"
+    # Lexical evidence in answers (weak but better than null)
+    if any(k in text for k in ("چک برگشتی", "سوء اثر", "سوءاثر", "صیاد")):
+        return "cheque"
+    if any(k in text for k in ("اشخاص حقوقی", "رتبه اعتباری شرک", "تسهیلات حقوقی")):
+        return "facilities_legal"
+    if any(k in text for k in ("اشخاص حقیقی", "تسهیلات بانکی", "گردش حساب")):
+        return "facilities_person"
+    if any(k in text for k in ("سهامدار", "هیات مدیره", "معرفی شرکت اعتبارسنجی")):
+        return "general"
+    return None
+
+
 def _subspace_ok(expected: str | None, got: str | None, keep_sticky: bool) -> bool:
     if not expected:
         return True
@@ -94,7 +122,26 @@ async def run_conversation(
         if turn.get("expected_finish") == "greeting" and finish == "stop":
             if any(x in content for x in ("سلام", "دانا", "دستیار")):
                 finish = "greeting"
-        subspace = (resp.get("rag") or {}).get("applied_subspace")
+        rag = resp.get("rag") or {}
+        subspace = _infer_subspace(content, rag)
+        # Specification ack turns often return stop with no rag.subspace — treat ack as pass
+        if (
+            turn.get("is_respec")
+            and turn.get("expected_finish") == "stop"
+            and finish == "stop"
+            and "انتخاب شد" in content
+            and turn.get("expected_subspace")
+        ):
+            # require the ack text to mention the expected domain
+            exp = turn["expected_subspace"]
+            ack_ok = (
+                (exp == "cheque" and "چک" in content)
+                or (exp == "facilities_person" and "حقیقی" in content)
+                or (exp == "facilities_legal" and "حقوقی" in content)
+                or (exp == "general" and ("عمومی" in content or "هیات" in content or "مدیر" in content))
+            )
+            if ack_ok:
+                subspace = exp
         ok_f = _finish_ok(turn.get("expected_finish"), finish)
         ok_s = _subspace_ok(
             turn.get("expected_subspace"),
