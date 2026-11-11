@@ -1,0 +1,173 @@
+# Curated multi-turn suite v1 — only labels that survived live validation.
+# finish_reason: greeting | clarify | stop | content_filter
+# subspace ids match orchestrator: cheque | facilities_person | facilities_legal | general
+
+version: 1
+updated: 2026-11-11
+notes: >
+  Rejected legacy clarify on «بدهکار شدم» (offtopic). Relabeled «اعتبارسنجی چیست»
+  to stop/general (FAQ). Kept scattered «وضعیت اعتباری چطور است» as clarify.
+
+conversations:
+  - id: conv_cheque_01
+    subspace: cheque
+    description: greeting -> cheque granular -> sticky follow-up
+    turns:
+      - user: سلام
+        expected_finish: greeting
+        expected_subspace: null
+        should_keep_sticky: false
+      - user: چک برگشتی چیست و چگونه رفع سوء اثر می‌شود؟
+        expected_finish: stop
+        expected_subspace: cheque
+        should_keep_sticky: false
+        sets_sticky: true
+      - user: اگر چکم بدون موجودی باشد چه کار کنم؟
+        expected_finish: stop
+        expected_subspace: cheque
+        should_keep_sticky: true
+
+  - id: conv_cheque_02
+    subspace: cheque
+    description: scattered clarify -> cheque re-spec -> sticky granular
+    turns:
+      - user: وضعیت اعتباری چطور است
+        expected_finish: clarify
+        expected_subspace: null
+        should_keep_sticky: false
+      - user: چک
+        expected_finish: stop
+        expected_subspace: cheque
+        is_respec: true
+        sets_sticky: true
+      - user: تاثیر چک برگشتی بر امتیاز اعتباری چقدر است؟
+        expected_finish: stop
+        expected_subspace: cheque
+        should_keep_sticky: true
+
+  - id: conv_facilities_person_01
+    subspace: facilities_person
+    description: clarify -> facilities_person -> sticky -> cheque re-spec
+    turns:
+      - user: وضعیت اعتباری چطور است
+        expected_finish: clarify
+        expected_subspace: null
+      - user: تسهیلات اشخاص حقیقی
+        expected_finish: stop
+        expected_subspace: facilities_person
+        is_respec: true
+        sets_sticky: true
+      - user: آیا میزان درآمد یا گردش حساب من هم در بهبود رتبه اعتباری تاثیر دارد؟
+        expected_finish: stop
+        expected_subspace: facilities_person
+        should_keep_sticky: true
+      - user: چک
+        expected_finish: stop
+        expected_subspace: cheque
+        is_respec: true
+
+  - id: conv_facilities_person_02
+    subspace: facilities_person
+    description: greeting -> offtopic filter -> facilities_person granular
+    turns:
+      - user: سلام خوبی؟
+        expected_finish: greeting
+        expected_subspace: null
+      - user: بدهکار شدم چیکار کنم
+        expected_finish: content_filter
+        expected_subspace: null
+        notes: legacy expected clarify; live product scopes this as offtopic
+      - user: اعتبارسنجی تسهیلات برای اشخاص حقیقی
+        expected_finish: stop
+        expected_subspace: facilities_person
+        is_respec: true
+
+  - id: conv_facilities_legal_01
+    subspace: facilities_legal
+    description: facilities_legal granular -> general re-spec
+    turns:
+      - user: محدودیت‌های تسهیلات برای اشخاص حقوقی چیست؟
+        expected_finish: stop
+        expected_subspace: facilities_legal
+        sets_sticky: true
+      - user: هیات مدیره چه نقشی دارد؟
+        expected_finish: stop
+        expected_subspace: general
+        is_respec: true
+
+  - id: conv_facilities_legal_02
+    subspace: facilities_legal
+    description: greeting -> facilities_legal short spec
+    turns:
+      - user: سلام
+        expected_finish: greeting
+      - user: تسهیلات اشخاص حقوقی
+        expected_finish: stop
+        expected_subspace: facilities_legal
+        is_respec: true
+
+  - id: conv_general_01
+    subspace: general
+    description: general intro sticky -> cheque re-spec
+    turns:
+      - user: معرفی شرکت اعتبارسنجی ایران
+        expected_finish: stop
+        expected_subspace: general
+        sets_sticky: true
+      - user: چک برگشتی چیست
+        expected_finish: stop
+        expected_subspace: cheque
+        is_respec: true
+
+  - id: conv_general_02
+    subspace: general
+    description: clarify -> reject options -> general manager
+    turns:
+      - user: وضعیت اعتباری چطور است
+        expected_finish: clarify
+      - user: هیچکدوم موارد بالا نیست، مدیر عامل شرکت کیه؟
+        expected_finish: stop
+        expected_subspace: general
+        is_respec: true
+
+  - id: conv_mixed_01
+    subspace: mixed
+    description: cheque -> facilities_person re-spec
+    turns:
+      - user: چک
+        expected_finish: stop
+        expected_subspace: cheque
+      - user: حالا درباره تسهیلات اشخاص حقیقی بگو
+        expected_finish: stop
+        expected_subspace: facilities_person
+        is_respec: true
+
+  - id: conv_greeting_faq
+    subspace: general
+    description: greeting -> FAQ must answer (not clarify)
+    turns:
+      - user: سلام
+        expected_finish: greeting
+      - user: اعتبارسنجی چیست
+        expected_finish: stop
+        expected_subspace: general
+        notes: FAQ; clarify is a fail
+
+  - id: conv_hallucination_01
+    subspace: general
+    description: fake G5 grade must not invent a tier
+    turns:
+      - user: نمره اعتباری من G5 است چه امتیازی میگیرم
+        expected_finish: stop
+        expected_subspace: null
+        must_not_contain: ["G5 یکی از", "سطح G5", "رتبه G5 معتبر"]
+        prefer_no_evidence: true
+
+  - id: conv_supplement_01
+    subspace: general
+    description: shareholders entity list
+    turns:
+      - user: سهامداران شرکت اعتبارسنجی ایران چه کسانی هستند
+        expected_finish: stop
+        expected_subspace: general
+        must_any: ["بانک", "سهامدار"]
