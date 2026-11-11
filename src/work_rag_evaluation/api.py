@@ -19,7 +19,7 @@ from pydantic import BaseModel, Field
 
 from .multiturn.runner import run_suite, write_report
 from .retrieval.hitk import evaluate_hitk, write_hitk_report
-from .retrieval.remap import remap_dataset
+from .retrieval.remap import DEFAULT_MIN_OVERLAP, remap_dataset
 
 log = logging.getLogger(__name__)
 
@@ -35,8 +35,8 @@ _JOBS: dict[str, dict[str, Any]] = {}
 
 class HitkRequest(BaseModel):
     dataset: str = Field(
-        default="retrieval/eval_clean_remapped.json",
-        description="Path relative to datasets/",
+        default="retrieval/eval_clean_remapped_strict.json",
+        description="Path relative to datasets/ (strict gate; falls back to weak remapped)",
     )
     top_k: int = 5
     limit: int | None = None
@@ -44,7 +44,11 @@ class HitkRequest(BaseModel):
         default=None,
         description="Optional legacy dataset to remap first (relative to datasets/)",
     )
-    min_overlap: float = 0.30
+    min_overlap: float = DEFAULT_MIN_OVERLAP
+    write_strict: bool = Field(
+        default=True,
+        description="When remapping, also write retrieval/eval_clean_remapped_strict.json",
+    )
 
 
 class MultiturnRequest(BaseModel):
@@ -100,9 +104,28 @@ async def _run_hitk_job(job_id: str, req: HitkRequest) -> None:
                 src, dst, limit=req.limit, min_overlap=req.min_overlap
             )
             job["remap"] = stats
-            dataset_path = dst
+            if req.write_strict:
+                strict_dst = DATASETS / "retrieval/eval_clean_remapped_strict.json"
+                # Remap already applied min_overlap; copy for the acceptance path.
+                strict_dst.write_text(dst.read_text(encoding="utf-8"), encoding="utf-8")
+                job["strict"] = {
+                    "path": str(strict_dst),
+                    "min_overlap": req.min_overlap,
+                }
+                dataset_path = strict_dst
+            else:
+                dataset_path = dst
         else:
             dataset_path = DATASETS / req.dataset
+            if not dataset_path.exists() and req.dataset.endswith(
+                "eval_clean_remapped_strict.json"
+            ):
+                fallback = DATASETS / "retrieval/eval_clean_remapped.json"
+                if fallback.exists():
+                    log.warning(
+                        "strict dataset missing; falling back to %s", fallback
+                    )
+                    dataset_path = fallback
         if not dataset_path.exists():
             raise FileNotFoundError(f"dataset missing: {dataset_path}")
         job["status"] = "running"

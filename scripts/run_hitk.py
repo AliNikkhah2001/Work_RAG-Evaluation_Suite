@@ -16,10 +16,13 @@ from work_rag_evaluation.retrieval.hitk import evaluate_hitk, write_hitk_report 
 
 def main() -> int:
     p = argparse.ArgumentParser()
+    strict = ROOT / "datasets/retrieval/eval_clean_remapped_strict.json"
+    weak = ROOT / "datasets/retrieval/eval_clean_remapped.json"
     p.add_argument(
         "--dataset",
         type=Path,
-        default=ROOT / "datasets/retrieval/eval_clean_remapped.json",
+        default=strict if strict.exists() else weak,
+        help="prefer eval_clean_remapped_strict.json (min_overlap≥0.75) when present",
     )
     p.add_argument("--top-k", type=int, default=5)
     p.add_argument("--limit", type=int, default=None)

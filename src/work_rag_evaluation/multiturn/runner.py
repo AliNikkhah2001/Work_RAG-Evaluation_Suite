@@ -54,27 +54,64 @@ def _finish_ok(expected: str | None, got: str | None) -> bool:
 
 
 def _infer_subspace(content: str, rag: dict[str, Any]) -> str | None:
-    """Infer subspace when orch omits applied_subspace from rag metadata."""
+    """Infer subspace when orch omits applied_subspace from rag metadata.
+
+    Metadata wins. Lexical fallback must not pick cheque from incidental
+    «چک برگشتی» / greeting «تحلیل چک‌ها» wording when facilities keywords dominate
+    (conv_facilities_person_02 T3: facilities answer mentioning bounced cheques).
+    """
     for key in ("applied_subspace", "sticky_subspace", "subspace"):
         val = rag.get(key)
         if val:
             return str(val)
     text = content or ""
+    # Canned greeting / offtopic blurbs mention چک و تسهیلات generically — skip.
+    _canned_blurbs = (
+        "من دستیار هوشمند شرکت اعتبارسنجی ایران هستم",
+        "فقط به سوالات مربوط به اعتبارسنجی",
+        "در زمینه‌های مربوط به گزارش اعتباری",
+        "تحلیل چک‌ها به شما کمک می‌کنم",
+    )
+    _looks_canned = any(b in text for b in _canned_blurbs) and len(text) < 450
+    if _looks_canned:
+        return None
     # Specification ack patterns from classify/format_response
-    if "اشخاص حقیقی/اعتبارسنجی تسهیلات" in text or "تسهیلات اشخاص حقیقی" in text and "انتخاب شد" in text:
+    if "اشخاص حقیقی/اعتبارسنجی تسهیلات" in text or (
+        "تسهیلات اشخاص حقیقی" in text and "انتخاب شد" in text
+    ):
         return "facilities_person"
-    if "اشخاص حقوقی/اعتبارسنجی تسهیلات" in text or ("تسهیلات اشخاص حقوقی" in text and "انتخاب شد" in text):
+    if "اشخاص حقوقی/اعتبارسنجی تسهیلات" in text or (
+        "تسهیلات اشخاص حقوقی" in text and "انتخاب شد" in text
+    ):
         return "facilities_legal"
-    if "گزارش اعتبارسنجی چک" in text or "گزارش اعتباری چک" in text or ("چک" in text and "انتخاب شد" in text):
+    if "گزارش اعتبارسنجی چک" in text or "گزارش اعتباری چک" in text or (
+        "چک" in text and "انتخاب شد" in text
+    ):
         return "cheque"
     if "پایگاه دانش عمومی" in text and "انتخاب شد" in text:
         return "general"
-    # Lexical evidence in answers (weak but better than null)
-    if any(k in text for k in ("چک برگشتی", "سوء اثر", "سوءاثر", "صیاد")):
-        return "cheque"
-    if any(k in text for k in ("اشخاص حقوقی", "رتبه اعتباری شرک", "تسهیلات حقوقی")):
+    # Lexical evidence — facilities/legal first so incidental cheque factors in a
+    # facilities_person answer do not flip the score to cheque.
+    _fac_person = any(k in text for k in ("اشخاص حقیقی", "تسهیلات اشخاص حقیقی", "اعتبارسنجی تسهیلات برای اشخاص حقیقی"))
+    _fac_legal = any(k in text for k in ("اشخاص حقوقی", "رتبه اعتباری شرک", "تسهیلات حقوقی", "تسهیلات اشخاص حقوقی"))
+    _cheque_strong = any(
+        k in text
+        for k in (
+            "گزارش اعتبارسنجی چک",
+            "گزارش اعتباری چک",
+            "اعتبارسنجی چک",
+            "امتیاز چک",
+            "رتبه چک",
+        )
+    )
+    _cheque_weak = any(k in text for k in ("چک برگشتی", "سوء اثر", "سوءاثر", "صیاد"))
+    if _fac_person and not _cheque_strong:
+        return "facilities_person"
+    if _fac_legal and not _cheque_strong:
         return "facilities_legal"
-    if any(k in text for k in ("اشخاص حقیقی", "تسهیلات بانکی", "گردش حساب")):
+    if _cheque_strong or (_cheque_weak and not _fac_person and not _fac_legal):
+        return "cheque"
+    if any(k in text for k in ("تسهیلات بانکی", "گردش حساب")) and not _cheque_strong:
         return "facilities_person"
     if any(k in text for k in ("سهامدار", "هیات مدیره", "معرفی شرکت اعتبارسنجی")):
         return "general"
