@@ -18,6 +18,7 @@ Do not trust prior goldens blindly. See [`docs/AUDIT.md`](docs/AUDIT.md):
 |---|---|---|
 | Multi-turn | `python scripts/run_multiturn.py` | clarify, sticky, re-spec, greeting, offtopic, FAQ, supplements |
 | Hit@k | `python scripts/remap_hitk_dataset.py` (+ hygiene) then `python scripts/run_hitk.py` | Hit@1 / Hit@5 after strict answer-as-query remapping |
+| Sticky stress | `python scripts/run_stress_clarify.py` (+ compare / regression) | Long sticky 30/40/50 streams with clarify auto-replies; before→after QA-loop snapshot |
 
 ## Defaults
 
@@ -45,11 +46,27 @@ python scripts/run_hitk.py \
 
 # Full diagnose (remap → strict → Hit@k → multiturn)
 python scripts/diagnose.py --use-strict
+
+# Sticky stress (clarify-aware 30/40/50) — needs orch :8100
+python scripts/run_stress_clarify.py --turns 50 --label live-50 \
+  --out artifacts/stress/stress_clarify_50_live.json
+python scripts/compare_stress_clarify.py   # reads datasets/stress/results baselines
+python scripts/run_stress_regression.py    # hard cases + LiteLLM judge (:4000)
 ```
 
 If KB `/search/api` returns 500, still ship/use the 0.75 defaults; live remap cannot re-run until search is fixed. Offline `--write-strict` hygiene still works when `remap_overlap` is present on the weak remapped file.
 
-Artifacts land in `artifacts/`.
+Artifacts land in `artifacts/` (gitignored). Committed stress snapshots live under `datasets/stress/results/`.
+
+### Sticky stress before → after (2026-11-16 QA loop)
+
+| Suite | avg score | content_filter | no_evidence | hard errors |
+|------:|----------:|---------------:|------------:|------------:|
+| 30 | 0.908 → 0.932 | 1 → 0 | 2 → 1 | 0 |
+| 40 | 0.904 → 0.955 | 1 → 0 | 4 → 0 | 0 |
+| 50 | 0.907 → 0.947 | 2 → 0 | 4 → 1 | 0 |
+
+Details: [`docs/STRESS_CLARIFY_BEFORE_AFTER_2026-11-16.md`](docs/STRESS_CLARIFY_BEFORE_AFTER_2026-11-16.md) · [`datasets/stress/README.md`](datasets/stress/README.md).
 
 ## Layout
 
@@ -58,10 +75,12 @@ datasets/multiturn/conversations_v1.yaml   # curated labels only (VALID_BUGS kep
 datasets/retrieval/                        # remapped Hit@k goldens (generated)
   eval_clean_remapped.json                 # historical weak remap
   eval_clean_remapped_strict.json          # min_overlap≥0.75 acceptance set
+datasets/stress/results/                   # sticky 30/40/50 baselines + after-fix JSON
 src/work_rag_evaluation/                   # runners + clients
-scripts/                                   # CLIs (remap, hygiene, diagnose, hitk, multiturn)
+scripts/                                   # CLIs (remap, hygiene, diagnose, hitk, multiturn, stress)
 docs/AUDIT.md                              # why we rejected/kept each legacy source
 docs/DIAGNOSIS_2026-11-11.md               # includes polluted 69.7% caveat
+docs/STRESS_CLARIFY_BEFORE_AFTER_2026-11-16.md
 ```
 
 ## Parent wiring

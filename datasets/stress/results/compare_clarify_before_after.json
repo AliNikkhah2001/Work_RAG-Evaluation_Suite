@@ -1,0 +1,606 @@
+{
+  "suites": [
+    {
+      "n": 30,
+      "before": {
+        "planned_questions": 30,
+        "total_turns": 36,
+        "ok_turns": 36,
+        "err_turns": 0,
+        "clarify_count": 6,
+        "clarify_followups": 6,
+        "stop": 29,
+        "content_filter": 1,
+        "yaft_in_answer": 2,
+        "no_evidence_flag": 2,
+        "hard_error": 0,
+        "avg_reasonableness": 0.908,
+        "avg_dt_s": 6.22,
+        "flag_counts": {
+          "ok": 27,
+          "clarify_ok": 6,
+          "content_filter": 1,
+          "no_evidence": 2
+        },
+        "question_turns": 30
+      },
+      "after": {
+        "planned_questions": 30,
+        "total_turns": 36,
+        "ok_turns": 36,
+        "err_turns": 0,
+        "clarify_count": 6,
+        "clarify_followups": 6,
+        "stop": 30,
+        "content_filter": 0,
+        "yaft_in_answer": 1,
+        "no_evidence_flag": 1,
+        "hard_error": 0,
+        "avg_reasonableness": 0.932,
+        "avg_dt_s": 5.95,
+        "flag_counts": {
+          "ok": 29,
+          "clarify_ok": 6,
+          "no_evidence": 1,
+          "unexpected_no_evidence_on_definition": 1
+        },
+        "question_turns": 30
+      },
+      "delta": {
+        "avg_reasonableness": 0.024,
+        "content_filter": -1,
+        "yaft_in_answer": -1,
+        "no_evidence_flag": -1,
+        "err_turns": 0,
+        "hard_error": 0
+      },
+      "key_cases": [
+        {
+          "question": "چگونه سوابق منفی را رفع کنم؟",
+          "before": {
+            "fr": "content_filter",
+            "flags": [
+              "content_filter"
+            ],
+            "score": 0.4,
+            "clarify_reply": null,
+            "ans": "من دستیار هوشمند شرکت اعتبارسنجی ایران هستم و فقط به سوالات مربوط به اعتبارسنجی، گزارش و امتیاز اعتباری (چک و تسهیلات بانکی) پاسخ می‌دهم. لطفاً پرسش خود را در ه",
+            "follow_fr": null,
+            "follow_flags": null,
+            "follow_ans": null
+          },
+          "after": {
+            "fr": "stop",
+            "flags": [
+              "ok"
+            ],
+            "score": 1.0,
+            "clarify_reply": null,
+            "ans": "سوابق منفی اعتباری، اعم از چک‌های برگشتی، تأخیر در پرداخت اقساط تسهیلات، بدهی‌های مالیاتی یا محکومیت‌های مالی، طبق مقررات در بازه زمانی ۵ سال در گزارش اعتباری ب",
+            "follow_fr": null,
+            "follow_flags": null,
+            "follow_ans": null
+          }
+        },
+        {
+          "question": "سابقه سفته در اعتبارسنجی ثبت می‌شود؟",
+          "before": {
+            "fr": "clarify",
+            "flags": [
+              "clarify_ok"
+            ],
+            "score": 0.7,
+            "clarify_reply": "حقیقی",
+            "ans": "آیا منظور شما سابقه سفته برای اشخاص حقیقی است یا اشخاص حقوقی؟",
+            "follow_fr": "stop",
+            "follow_flags": [
+              "no_evidence"
+            ],
+            "follow_ans": "بر اساس اطلاعات موجود در پایگاه دانش، پاسخی برای این سوال یافت نشد."
+          },
+          "after": {
+            "fr": "clarify",
+            "flags": [
+              "clarify_ok"
+            ],
+            "score": 0.7,
+            "clarify_reply": "حقیقی",
+            "ans": "آیا منظور شما سوابق مربوط به اشخاص حقیقی است یا اشخاص حقوقی؟",
+            "follow_fr": "stop",
+            "follow_flags": [
+              "ok"
+            ],
+            "follow_ans": "خیر، در حال حاضر داده‌های مربوط به سفته در فرآیند اعتبارسنجی اشخاص حقیقی و شرکت‌ها لحاظ نمی‌شود و بر رتبه یا امتیاز اعتباری اثر نمی‌گذارد. در مقابل، مواردی نظیر"
+          }
+        },
+        {
+          "question": "ضمانت‌نامه بانکی چه ربطی به اعتبارسنجی دارد؟",
+          "before": {
+            "fr": "clarify",
+            "flags": [
+              "clarify_ok"
+            ],
+            "score": 0.7,
+            "clarify_reply": "حقیقی",
+            "ans": "آیا منظور شما بررسی ضمانت‌نامه برای تسهیلات اشخاص حقیقی است یا حقوقی؟",
+            "follow_fr": "stop",
+            "follow_flags": [
+              "no_evidence"
+            ],
+            "follow_ans": "بر اساس اطلاعات موجود در پایگاه دانش، پاسخی برای این سوال یافت نشد."
+          },
+          "after": {
+            "fr": "clarify",
+            "flags": [
+              "clarify_ok"
+            ],
+            "score": 0.7,
+            "clarify_reply": "حقیقی",
+            "ans": "آیا منظور شما بررسی اعتبارسنجی برای دریافت تسهیلات اشخاص حقیقی است یا حقوقی؟",
+            "follow_fr": "stop",
+            "follow_flags": [
+              "ok"
+            ],
+            "follow_ans": "در خصوص ضمانت‌نامه‌های بانکی، تأثیر آن‌ها بر اعتبارسنجی بسته به نوع شخص (حقیقی یا حقوقی) متفاوت است: برای شرکت‌ها (اشخاص حقوقی)، ضمانت‌نامه‌های صادر شده در محاس"
+          }
+        }
+      ]
+    },
+    {
+      "n": 40,
+      "before": {
+        "planned_questions": 40,
+        "total_turns": 47,
+        "ok_turns": 47,
+        "err_turns": 0,
+        "clarify_count": 7,
+        "clarify_followups": 7,
+        "stop": 39,
+        "content_filter": 1,
+        "yaft_in_answer": 4,
+        "no_evidence_flag": 4,
+        "hard_error": 0,
+        "avg_reasonableness": 0.904,
+        "avg_dt_s": 4.84,
+        "flag_counts": {
+          "ok": 35,
+          "clarify_ok": 7,
+          "content_filter": 1,
+          "no_evidence": 4
+        },
+        "question_turns": 40
+      },
+      "after": {
+        "planned_questions": 40,
+        "total_turns": 47,
+        "ok_turns": 47,
+        "err_turns": 0,
+        "clarify_count": 7,
+        "clarify_followups": 7,
+        "stop": 40,
+        "content_filter": 0,
+        "yaft_in_answer": 0,
+        "no_evidence_flag": 0,
+        "hard_error": 0,
+        "avg_reasonableness": 0.955,
+        "avg_dt_s": 4.88,
+        "flag_counts": {
+          "ok": 40,
+          "clarify_ok": 7
+        },
+        "question_turns": 40
+      },
+      "delta": {
+        "avg_reasonableness": 0.051,
+        "content_filter": -1,
+        "yaft_in_answer": -4,
+        "no_evidence_flag": -4,
+        "err_turns": 0,
+        "hard_error": 0
+      },
+      "key_cases": [
+        {
+          "question": "چگونه سوابق منفی را رفع کنم؟",
+          "before": {
+            "fr": "content_filter",
+            "flags": [
+              "content_filter"
+            ],
+            "score": 0.4,
+            "clarify_reply": null,
+            "ans": "من دستیار هوشمند شرکت اعتبارسنجی ایران هستم و فقط به سوالات مربوط به اعتبارسنجی، گزارش و امتیاز اعتباری (چک و تسهیلات بانکی) پاسخ می‌دهم. لطفاً پرسش خود را در ه",
+            "follow_fr": null,
+            "follow_flags": null,
+            "follow_ans": null
+          },
+          "after": {
+            "fr": "stop",
+            "flags": [
+              "ok"
+            ],
+            "score": 1.0,
+            "clarify_reply": null,
+            "ans": "سوابق منفی اعتباری اعم از چک‌های برگشتی، تأخیر در بازپرداخت اقساط تسهیلات، بدهی‌های مالیاتی و محکومیت‌های مالی، طبق مقررات در بازه زمانی ۵ سال در گزارش اعتباری ",
+            "follow_fr": null,
+            "follow_flags": null,
+            "follow_ans": null
+          }
+        },
+        {
+          "question": "سابقه سفته در اعتبارسنجی ثبت می‌شود؟",
+          "before": {
+            "fr": "clarify",
+            "flags": [
+              "clarify_ok"
+            ],
+            "score": 0.7,
+            "clarify_reply": "حقیقی",
+            "ans": "آیا منظور شما سوابق مربوط به اشخاص حقیقی است یا اشخاص حقوقی؟",
+            "follow_fr": "stop",
+            "follow_flags": [
+              "no_evidence"
+            ],
+            "follow_ans": "بر اساس اطلاعات موجود در پایگاه دانش، پاسخی برای این سوال یافت نشد."
+          },
+          "after": {
+            "fr": "clarify",
+            "flags": [
+              "clarify_ok"
+            ],
+            "score": 0.7,
+            "clarify_reply": "حقیقی",
+            "ans": "آیا این سوال در رابطه با تسهیلات اشخاص حقیقی است یا اشخاص حقوقی؟",
+            "follow_fr": "stop",
+            "follow_flags": [
+              "ok"
+            ],
+            "follow_ans": "خیر، در حال حاضر داده‌های مربوط به سفته در اعتبارسنجی اشخاص حقیقی و شرکت‌ها لحاظ نمی‌شود و بر رتبه یا امتیاز اعتباری اثر نمی‌گذارد. در مقابل، مواردی مانند سابقه"
+          }
+        },
+        {
+          "question": "ضمانت‌نامه بانکی چه ربطی به اعتبارسنجی دارد؟",
+          "before": {
+            "fr": "clarify",
+            "flags": [
+              "clarify_ok"
+            ],
+            "score": 0.7,
+            "clarify_reply": "حقیقی",
+            "ans": "آیا سوال شما در رابطه با تسهیلات اشخاص حقیقی است یا اشخاص حقوقی؟",
+            "follow_fr": "stop",
+            "follow_flags": [
+              "no_evidence"
+            ],
+            "follow_ans": "بر اساس اطلاعات موجود در پایگاه دانش، پاسخی برای این سوال یافت نشد."
+          },
+          "after": {
+            "fr": "clarify",
+            "flags": [
+              "clarify_ok"
+            ],
+            "score": 0.7,
+            "clarify_reply": "حقیقی",
+            "ans": "آیا سوال شما مربوط به تسهیلات اشخاص حقیقی است یا اشخاص حقوقی؟",
+            "follow_fr": "stop",
+            "follow_flags": [
+              "ok"
+            ],
+            "follow_ans": "در مورد ضمانت‌نامه‌های بانکی، اثر این ابزار بر اعتبارسنجی بسته به نوع شخص (حقیقی یا حقوقی) متفاوت است: برای اشخاص حقوقی، ضمانت‌نامه‌ها در محاسبه امتیاز و رتبه ا"
+          }
+        },
+        {
+          "question": "چک مدت‌دار چگونه ارزیابی می‌شود؟",
+          "before": {
+            "fr": "stop",
+            "flags": [
+              "no_evidence"
+            ],
+            "score": 0.55,
+            "clarify_reply": null,
+            "ans": "بر اساس اطلاعات موجود در پایگاه دانش، پاسخی برای این سوال یافت نشد.",
+            "follow_fr": null,
+            "follow_flags": null,
+            "follow_ans": null
+          },
+          "after": {
+            "fr": "stop",
+            "flags": [
+              "ok"
+            ],
+            "score": 1.0,
+            "clarify_reply": null,
+            "ans": "ارزیابی چک‌ها در سامانه اعتبارسنجی بر اساس سوابق عملکرد مالی شخص در زمینه وصول و ارائه چک‌ها صورت می‌گیرد. در این فرآیند، تمرکز اصلی بر روی چک‌های برگشتی است و ",
+            "follow_fr": null,
+            "follow_flags": null,
+            "follow_ans": null
+          }
+        },
+        {
+          "question": "سقف چک برگشتی چقدر است؟",
+          "before": {
+            "fr": "stop",
+            "flags": [
+              "no_evidence"
+            ],
+            "score": 0.55,
+            "clarify_reply": null,
+            "ans": "بر اساس اطلاعات موجود در پایگاه دانش، پاسخی برای این سوال یافت نشد.",
+            "follow_fr": null,
+            "follow_flags": null,
+            "follow_ans": null
+          },
+          "after": {
+            "fr": "stop",
+            "flags": [
+              "ok"
+            ],
+            "score": 1.0,
+            "clarify_reply": null,
+            "ans": "بر اساس اطلاعات موجود در پایگاه دانش، سقف عددی مشخصی برای تعداد چک‌های برگشتی تعریف نشده است، اما وجود هرگونه چک برگشتی به عنوان یک رویداد منفی در مدل اعتبارسنج",
+            "follow_fr": null,
+            "follow_flags": null,
+            "follow_ans": null
+          }
+        }
+      ]
+    },
+    {
+      "n": 50,
+      "before": {
+        "planned_questions": 50,
+        "total_turns": 58,
+        "ok_turns": 58,
+        "err_turns": 0,
+        "clarify_count": 8,
+        "clarify_followups": 8,
+        "stop": 48,
+        "content_filter": 2,
+        "yaft_in_answer": 4,
+        "no_evidence_flag": 4,
+        "hard_error": 0,
+        "avg_reasonableness": 0.907,
+        "avg_dt_s": 5.2,
+        "flag_counts": {
+          "ok": 44,
+          "clarify_ok": 8,
+          "content_filter": 2,
+          "no_evidence": 4
+        },
+        "question_turns": 50
+      },
+      "after": {
+        "planned_questions": 50,
+        "total_turns": 58,
+        "ok_turns": 58,
+        "err_turns": 0,
+        "clarify_count": 8,
+        "clarify_followups": 8,
+        "stop": 50,
+        "content_filter": 0,
+        "yaft_in_answer": 1,
+        "no_evidence_flag": 1,
+        "hard_error": 0,
+        "avg_reasonableness": 0.947,
+        "avg_dt_s": 5.11,
+        "flag_counts": {
+          "ok": 49,
+          "clarify_ok": 8,
+          "no_evidence": 1,
+          "unexpected_no_evidence_on_definition": 1
+        },
+        "question_turns": 50
+      },
+      "delta": {
+        "avg_reasonableness": 0.04,
+        "content_filter": -2,
+        "yaft_in_answer": -3,
+        "no_evidence_flag": -3,
+        "err_turns": 0,
+        "hard_error": 0
+      },
+      "key_cases": [
+        {
+          "question": "چگونه سوابق منفی را رفع کنم؟",
+          "before": {
+            "fr": "content_filter",
+            "flags": [
+              "content_filter"
+            ],
+            "score": 0.4,
+            "clarify_reply": null,
+            "ans": "من دستیار هوشمند شرکت اعتبارسنجی ایران هستم و فقط به سوالات مربوط به اعتبارسنجی، گزارش و امتیاز اعتباری (چک و تسهیلات بانکی) پاسخ می‌دهم. لطفاً پرسش خود را در ه",
+            "follow_fr": null,
+            "follow_flags": null,
+            "follow_ans": null
+          },
+          "after": {
+            "fr": "stop",
+            "flags": [
+              "ok"
+            ],
+            "score": 1.0,
+            "clarify_reply": null,
+            "ans": "سوابق منفی اعتباری، اعم از چک‌های برگشتی، تأخیر در بازپرداخت اقساط، بدهی‌های مالیاتی یا محکومیت‌های مالی، طبق مقررات به مدت ۵ سال در گزارش اعتباری باقی می‌مانند",
+            "follow_fr": null,
+            "follow_flags": null,
+            "follow_ans": null
+          }
+        },
+        {
+          "question": "سابقه سفته در اعتبارسنجی ثبت می‌شود؟",
+          "before": {
+            "fr": "clarify",
+            "flags": [
+              "clarify_ok"
+            ],
+            "score": 0.7,
+            "clarify_reply": "حقیقی",
+            "ans": "آیا این سوال مربوط به تسهیلات اشخاص حقیقی است یا حقوقی؟",
+            "follow_fr": "stop",
+            "follow_flags": [
+              "no_evidence"
+            ],
+            "follow_ans": "بر اساس اطلاعات موجود در پایگاه دانش، پاسخی برای این سوال یافت نشد."
+          },
+          "after": {
+            "fr": "clarify",
+            "flags": [
+              "clarify_ok"
+            ],
+            "score": 0.7,
+            "clarify_reply": "حقیقی",
+            "ans": "آیا منظور شما سابقه سفته برای اشخاص حقیقی است یا حقوقی؟",
+            "follow_fr": "stop",
+            "follow_flags": [
+              "ok"
+            ],
+            "follow_ans": "خیر، در حال حاضر داده‌های مربوط به سفته در اعتبارسنجی اشخاص حقیقی و شرکت‌ها لحاظ نمی‌شود و در سامانه ثبت نمی‌گردد. در مقابل، مواردی نظیر سابقه تسهیلات (چه به صو"
+          }
+        },
+        {
+          "question": "ضمانت‌نامه بانکی چه ربطی به اعتبارسنجی دارد؟",
+          "before": {
+            "fr": "clarify",
+            "flags": [
+              "clarify_ok"
+            ],
+            "score": 0.7,
+            "clarify_reply": "حقیقی",
+            "ans": "آیا سوال شما مربوط به تسهیلات اشخاص حقیقی است یا حقوقی؟",
+            "follow_fr": "stop",
+            "follow_flags": [
+              "no_evidence"
+            ],
+            "follow_ans": "بر اساس اطلاعات موجود در پایگاه دانش، پاسخی برای این سوال یافت نشد."
+          },
+          "after": {
+            "fr": "clarify",
+            "flags": [
+              "clarify_ok"
+            ],
+            "score": 0.7,
+            "clarify_reply": "حقیقی",
+            "ans": "آیا منظور شما بررسی اعتبارسنجی برای دریافت تسهیلات اشخاص حقیقی است یا حقوقی؟",
+            "follow_fr": "stop",
+            "follow_flags": [
+              "ok"
+            ],
+            "follow_ans": "در مورد ضمانت‌نامه‌های بانکی، تأثیر آن‌ها بر اعتبارسنجی بسته به نوع شخص (حقیقی یا حقوقی) متفاوت است: برای اشخاص حقوقی، ضمانت‌نامه‌ها در محاسبه امتیاز و رتبه اعت"
+          }
+        },
+        {
+          "question": "چک مدت‌دار چگونه ارزیابی می‌شود؟",
+          "before": {
+            "fr": "stop",
+            "flags": [
+              "ok"
+            ],
+            "score": 1.0,
+            "clarify_reply": null,
+            "ans": "ارزیابی اعتباری در حوزه چک بر اساس تحلیل سوابق و رفتارهای مالی شخص در یک بازه زمانی ۵ ساله انجام می‌شود. این بازه زمانی به عنوان بهینه‌ترین دوره برای مقایسه عمل",
+            "follow_fr": null,
+            "follow_flags": null,
+            "follow_ans": null
+          },
+          "after": {
+            "fr": "stop",
+            "flags": [
+              "ok"
+            ],
+            "score": 1.0,
+            "clarify_reply": null,
+            "ans": "ارزیابی چک‌های مدت‌دار بر اساس سوابق عملکرد مالی شخص در زمینه وصول و ارائه چک‌ها صورت می‌گیرد. در این فرآیند، تمرکز اصلی بر روی چک‌های برگشتی است؛ زیرا تنها در ",
+            "follow_fr": null,
+            "follow_flags": null,
+            "follow_ans": null
+          }
+        },
+        {
+          "question": "آیا کارت اعتباری روی رتبه اثر دارد؟",
+          "before": {
+            "fr": "clarify",
+            "flags": [
+              "clarify_ok"
+            ],
+            "score": 0.7,
+            "clarify_reply": "حقیقی",
+            "ans": "آیا منظورتان اثر کارت اعتباری بر رتبه اعتباری اشخاص حقیقی است یا حقوقی؟",
+            "follow_fr": "stop",
+            "follow_flags": [
+              "no_evidence"
+            ],
+            "follow_ans": "بر اساس اطلاعات موجود در پایگاه دانش، پاسخی برای این سوال یافت نشد."
+          },
+          "after": {
+            "fr": "clarify",
+            "flags": [
+              "clarify_ok"
+            ],
+            "score": 0.7,
+            "clarify_reply": "حقیقی",
+            "ans": "آیا منظورتان رتبه اعتباری اشخاص حقیقی است یا اشخاص حقوقی؟",
+            "follow_fr": "stop",
+            "follow_flags": [
+              "ok"
+            ],
+            "follow_ans": "بله، هر نوع تسهیلاتی که در سامانه اعتبارسنجی ثبت شود، بر امتیاز و رتبه اعتباری اثر می‌گذارد. اطلاعات مربوط به پرداخت اقساط کارت‌های اعتباری و سایر تسهیلاتی که ت"
+          }
+        },
+        {
+          "question": "سقف چک برگشتی چقدر است؟",
+          "before": {
+            "fr": "stop",
+            "flags": [
+              "ok"
+            ],
+            "score": 1.0,
+            "clarify_reply": null,
+            "ans": "در گزارش اعتبارسنجی چک، آستانه یا سقف عددی برای مواردی مانند تعداد چک‌های برگشتی (مثلاً در بازه ۲ سال گذشته) توسط مدل اعتبارسنجی و بر اساس تحلیل‌های آماری تعیین",
+            "follow_fr": null,
+            "follow_flags": null,
+            "follow_ans": null
+          },
+          "after": {
+            "fr": "stop",
+            "flags": [
+              "ok"
+            ],
+            "score": 1.0,
+            "clarify_reply": null,
+            "ans": "در خصوص آستانه یا سقف تعداد چک‌های برگشتی که در گزارش به صورت «تعداد زیادی چک برگشتی» ذکر می‌شود، این مقدار توسط مدل اعتبارسنجی و بر اساس تحلیل‌های آماری تعیین ",
+            "follow_fr": null,
+            "follow_flags": null,
+            "follow_ans": null
+          }
+        },
+        {
+          "question": "نردبان اعتباری برای چه کسانی است؟",
+          "before": {
+            "fr": "stop",
+            "flags": [
+              "no_evidence"
+            ],
+            "score": 0.55,
+            "clarify_reply": null,
+            "ans": "بر اساس اطلاعات موجود در پایگاه دانش، پاسخی برای این سوال یافت نشد.",
+            "follow_fr": null,
+            "follow_flags": null,
+            "follow_ans": null
+          },
+          "after": {
+            "fr": "stop",
+            "flags": [
+              "ok"
+            ],
+            "score": 1.0,
+            "clarify_reply": null,
+            "ans": "نردبان اعتباری بستری برای افرادی است که قصد دارند وضعیت و رتبه اعتباری خود را بهبود ببخشند. این سامانه با معرفی راهکارها و طرح‌های سازمان‌های همکار، به کاربران ",
+            "follow_fr": null,
+            "follow_flags": null,
+            "follow_ans": null
+          }
+        }
+      ]
+    }
+  ]
+}
