@@ -13,6 +13,8 @@ orchestrator `:8100` (dana-local / stage).
 
 Narrative compare: [`docs/STRESS_CLARIFY_BEFORE_AFTER_2026-11-16.md`](../../docs/STRESS_CLARIFY_BEFORE_AFTER_2026-11-16.md).
 
+Full-answer RTL HTML (old vs new, highlighted improvements): [`docs/stress_clarify_before_after_rtl.html`](../../docs/stress_clarify_before_after_rtl.html) (regenerate with `python scripts/gen_stress_clarify_html.py`).
+
 ## Re-run
 
 ```bash
