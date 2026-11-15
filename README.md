@@ -66,7 +66,7 @@ Artifacts land in `artifacts/` (gitignored). Committed stress snapshots live und
 | 40 | 0.904 → 0.955 | 1 → 0 | 4 → 0 | 0 |
 | 50 | 0.907 → 0.947 | 2 → 0 | 4 → 1 | 0 |
 
-Details: [`docs/STRESS_CLARIFY_BEFORE_AFTER_2026-11-16.md`](docs/STRESS_CLARIFY_BEFORE_AFTER_2026-11-16.md) · [`datasets/stress/README.md`](datasets/stress/README.md).
+Details: [`docs/STRESS_CLARIFY_BEFORE_AFTER_2026-11-16.md`](docs/STRESS_CLARIFY_BEFORE_AFTER_2026-11-16.md) · [RTL full-answer compare](docs/stress_clarify_before_after_rtl.html) · [`datasets/stress/README.md`](datasets/stress/README.md).
 
 ## Layout
 
