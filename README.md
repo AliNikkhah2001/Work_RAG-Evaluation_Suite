@@ -16,6 +16,7 @@ Do not trust prior goldens blindly. See [`docs/AUDIT.md`](docs/AUDIT.md):
 
 | Suite | Entry | What it measures |
 |---|---|---|
+| Magic fire | `python scripts/run_magic_fire.py` | ≥100 curated prompts for which `rag.magic` widgets should/should-not fire |
 | Multi-turn | `python scripts/run_multiturn.py` | clarify, sticky, re-spec, greeting, offtopic, FAQ, supplements |
 | Hit@k | `python scripts/remap_hitk_dataset.py` (+ hygiene) then `python scripts/run_hitk.py` | Hit@1 / Hit@5 after strict answer-as-query remapping |
 
