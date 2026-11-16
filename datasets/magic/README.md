@@ -22,3 +22,7 @@ python scripts/run_magic_fire.py --live --base http://127.0.0.1:8100
 
 Samples: **103** (fire=69, none=34)
 Families: {'timeline': 14, 'none': 33, 'creditors': 8, 'shareholders': 6, 'gauge_cheque': 13, 'gauge_person': 10, 'gauge_legal': 4, 'bands': 7, 'clarify': 8}
+
+## Precheck vs LLM
+
+Offline runner scores **deterministic fallback** after high-recall `magic_precheck`. Production calls versioned KB `magic_judge*` prompts for every non-clarify family when precheck hits.
