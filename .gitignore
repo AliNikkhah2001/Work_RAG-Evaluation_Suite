@@ -11,3 +11,4 @@ artifacts/*.md
 !artifacts/.gitkeep
 # remapped Hit@k goldens are committed (regenerate via scripts/remap_hitk_dataset.py)
 .DS_Store
+datasets/magic/*_report.json
