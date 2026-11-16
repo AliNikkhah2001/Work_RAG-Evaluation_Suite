@@ -1,0 +1,711 @@
+{
+  "suites": [
+    {
+      "n": 30,
+      "gold_suffix": "_after",
+      "new_suffix": "_magic",
+      "counts": {
+        "questions": 30,
+        "regressions": 0,
+        "improvements": 1,
+        "still_bad": 0,
+        "fr_drift": 0,
+        "text_drift": 28,
+        "exact_or_magic_ok": 17,
+        "with_magic": 32,
+        "body_polluted": 0
+      },
+      "regressions": [],
+      "improvements": [
+        {
+          "i": 21,
+          "question": "تفاوت اعتبارسنجی حقیقی و حقوقی چیست؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": true,
+          "new_bad": false,
+          "had_magic": false,
+          "payload_magic": false,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "بر اساس اطلاعات موجود در پایگاه دانش، پاسخی برای این سوال یافت نشد.",
+          "new_head": "اعتبارسنجی اشخاص حقیقی و حقوقی (شرکتها و کسبوکارها) با یکدیگر تفاوت دارد. این تفاوت عمدتاً در نوع اطلاعات مورد استفاده و روش محاسبه امتیاز ا",
+          "magic_names": []
+        }
+      ],
+      "still_bad": [],
+      "fr_drift": [],
+      "text_drift_sample": [
+        {
+          "i": 1,
+          "question": "گزارش اعتبارسنجی چک چیست؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "گزارش اعتبارسنجی چک ابزاری است که برای سنجش اعتبار و ارزیابی ریسک اشخاص در حوزه صدور و مدیریت چک طراحی شده است. این گزارش با نمایش سوابق مرب",
+          "new_head": "گزارش اعتبارسنجی چک ابزاری است که برای سنجش اعتبار و ارزیابی ریسک اشخاص در حوزه صدور و مدیریت چک طراحی شده است. این گزارش با نمایش سوابق مرب",
+          "magic_names": [
+            "CREDIT_SCORE_GAUGE"
+          ]
+        },
+        {
+          "i": 2,
+          "question": "رتبه آبی یعنی چه؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "رتبه آبی در مدل اعتبارسنجی، نشاندهنده بالاترین سطح کیفیت اعتباری و کمریسکترین گروه است. بسته به نوع گزارش، این رتبه مفاهیم متفاوتی دارد: در ",
+          "new_head": "رتبه آبی در سیستم اعتبارسنجی، نشاندهنده بالاترین سطح رتبهبندی و وضعیت ممتاز است. بسته به نوع گزارش، این رتبه معانی متفاوتی دارد: در گزارش اع",
+          "magic_names": [
+            "CREDIT_SCORE_GAUGE"
+          ]
+        },
+        {
+          "i": 3,
+          "question": "چطور امتیاز اعتباری را بهبود دهم؟",
+          "gold_fr": "clarify",
+          "new_fr": "clarify",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "برای بهبود امتیاز اعتباری اشخاص حقیقی، تمرکز بر انضباط مالی و مدیریت صحیح تعهدات ضروری است. بر اساس اطلاعات موجود، اقدامات زیر میتوانند به ا",
+          "new_head": "برای بهبود امتیاز اعتباری اشخاص حقیقی، تمرکز بر انضباط مالی و مدیریت تعهدات کلیدی است. بر اساس اطلاعات موجود، موارد زیر بر افزایش امتیاز اثر",
+          "magic_names": [
+            "CLARIFY_OPTIONS"
+          ]
+        },
+        {
+          "i": 4,
+          "question": "نردبان اعتباری چیست؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "نردبان اعتباری بستری است که با هدف معرفی راهکارها و طرحهای موجود برای بهبود وضعیت و رتبه اعتباری طراحی شده است. از طریق این سامانه، کاربران ",
+          "new_head": "نردبان اعتباری بستری است که با هدف معرفی راهکارها و طرحهای موجود برای بهبود وضعیت و رتبه اعتباری طراحی شده است. کاربران از طریق این سامانه م",
+          "magic_names": [
+            "CREDIT_SCORE_BANDS"
+          ]
+        },
+        {
+          "i": 5,
+          "question": "تسهیلات اشخاص حقیقی چه اطلاعاتی دارد؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": false,
+          "payload_magic": false,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "گزارش اعتبارسنجی تسهیلات برای اشخاص حقیقی شامل اطلاعات هویتی (مانند نام، کد ملی و تاریخ تولد)، امتیاز اعتباری و دلایل احتمالی کاهش این امتیا",
+          "new_head": "گزارش اعتبارسنجی تسهیلات برای اشخاص حقیقی شامل اطلاعات هویتی (مانند نام، کد ملی و تاریخ تولد)، امتیاز اعتباری و دلایل احتمالی کاهش این امتیا",
+          "magic_names": []
+        },
+        {
+          "i": 6,
+          "question": "اعتبارسنجی چیست؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": false,
+          "payload_magic": false,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "اعتبارسنجی به معنای سنجش میزان اعتماد به اشخاص و شرکتها در انجام تعاملات مالی است. در گذشته این شناخت بر اساس آشناییهای شخصی و تجربیات فردی ",
+          "new_head": "اعتبارسنجی به معنای سنجش میزان اعتماد به اشخاص و شرکتها در انجام تعاملات مالی با آنها است. در گذشته این شناخت بر اساس آشناییهای شخصی و تجربی",
+          "magic_names": []
+        },
+        {
+          "i": 7,
+          "question": "کفیل اعتباری کیست؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": false,
+          "payload_magic": false,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "اعتبارسنجی کفیل فرآیندی است که در آن توانایی مالی و سوابق ایفای تعهدات شخص کفیل ارزیابی میشود. هدف از این بررسی، اطمینان از این است که کفیل ",
+          "new_head": "اعتبارسنجی کفیل فرآیندی است که در آن توانایی مالی (ملائت) و سابقه ایفای تعهدات یک شخص ارزیابی میشود تا اطمینان حاصل شود که وی در صورت لزوم ق",
+          "magic_names": []
+        },
+        {
+          "i": 8,
+          "question": "چک برگشتی چه تاثیری روی رتبه دارد؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "سابقه برگشت خوردن هر نوع چکی، اعم از چکهای شخصی، شرکتی یا حسابهای مشترک، مستقیماً باعث کاهش امتیاز و رتبه اعتباری فرد میشود. در این میان، تن",
+          "new_head": "سابقه برگشت خوردن هر نوع چکی، از جمله چکهای تضمینی یا چکهای مربوط به حسابهای مشترک و شرکتها، مستقیماً باعث کاهش امتیاز و رتبه اعتباری شخص می",
+          "magic_names": [
+            "CREDIT_SCORE_GAUGE"
+          ]
+        },
+        {
+          "i": 9,
+          "question": "امتیاز اعتباری چگونه محاسبه می‌شود؟",
+          "gold_fr": "clarify",
+          "new_fr": "clarify",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "امتیاز اعتباری اشخاص حقیقی بر اساس تحلیل جامع رفتار مالی و سوابق اعتباری فرد محاسبه میشود. این امتیاز که در بازهای بین ۲۵۰ تا ۹۰۰ قرار دارد،",
+          "new_head": "امتیاز اعتباری اشخاص حقیقی بر اساس تحلیل رفتارهای مالی و سوابق اعتباری محاسبه میشود تا میزان خوشحسابی و اعتبار مالی فرد تعیین گردد. این امتی",
+          "magic_names": [
+            "CLARIFY_OPTIONS"
+          ]
+        },
+        {
+          "i": 10,
+          "question": "تسهیلات اشخاص حقوقی شامل چیست؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": false,
+          "payload_magic": false,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "گزارش اعتبارسنجی تسهیلات برای اشخاص حقوقی شامل مجموعهای از اطلاعات هویتی، امتیاز و رتبه اعتباری، و دلایل کاهش امتیاز است. همچنین سوابق تسهیل",
+          "new_head": "گزارش اعتبارسنجی تسهیلات برای اشخاص حقوقی شامل مجموعهای از اطلاعات هویتی، امتیاز و رتبه اعتباری و دلایل کاهش امتیاز است. همچنین سوابق تسهیلا",
+          "magic_names": []
+        },
+        {
+          "i": 11,
+          "question": "رتبه زرد به چه معناست؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "رتبه زرد در مدل اعتبارسنجی تسهیلات اشخاص حقیقی، نشاندهنده رتبه مناسب و سطح میانی رتبهبندی است. این وضعیت با ریسک متوسط شناخته میشود و بازه ا",
+          "new_head": "رتبه زرد در مدل اعتبارسنجی تسهیلات اشخاص حقیقی، نشاندهنده رتبه مناسب و سطح میانی رتبهبندی است. این رتبه با ریسک متوسط شناخته میشود و بازه ام",
+          "magic_names": [
+            "CREDIT_SCORE_GAUGE"
+          ]
+        },
+        {
+          "i": 12,
+          "question": "چگونه سوابق منفی را رفع کنم؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "سوابق منفی اعتباری، اعم از چکهای برگشتی، تأخیر در پرداخت اقساط تسهیلات، بدهیهای مالیاتی یا محکومیتهای مالی، طبق مقررات در بازه زمانی ۵ سال د",
+          "new_head": "سوابق منفی اعتباری بر اساس مقررات در بازه زمانی مشخصی (۵ سال) در گزارش اعتباری باقی میمانند و امکان حذف دستی یا درخواست برای پاک کردن آنها و",
+          "magic_names": [
+            "CREDIT_SCORE_GAUGE"
+          ]
+        }
+      ],
+      "pass": true
+    },
+    {
+      "n": 40,
+      "gold_suffix": "_after",
+      "new_suffix": "_magic",
+      "counts": {
+        "questions": 40,
+        "regressions": 1,
+        "improvements": 0,
+        "still_bad": 0,
+        "fr_drift": 0,
+        "text_drift": 37,
+        "exact_or_magic_ok": 20,
+        "with_magic": 37,
+        "body_polluted": 0
+      },
+      "regressions": [
+        {
+          "i": 35,
+          "question": "سقف چک برگشتی چقدر است؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": true,
+          "had_magic": false,
+          "payload_magic": false,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "بر اساس اطلاعات موجود در پایگاه دانش، سقف عددی مشخصی برای تعداد چکهای برگشتی تعریف نشده است، اما وجود هرگونه چک برگشتی به عنوان یک رویداد من",
+          "new_head": "بر اساس اطلاعات موجود در پایگاه دانش، پاسخی برای این سوال یافت نشد.",
+          "magic_names": []
+        }
+      ],
+      "improvements": [],
+      "still_bad": [],
+      "fr_drift": [],
+      "text_drift_sample": [
+        {
+          "i": 1,
+          "question": "گزارش اعتبارسنجی چک چیست؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "گزارش اعتبارسنجی چک ابزاری برای سنجش اعتبار و ارزیابی ریسک اشخاص در حوزه صدور و مدیریت چک است. این گزارش با نمایش سوابق مربوط به چکهای برگشت",
+          "new_head": "گزارش اعتبارسنجی چک ابزاری است که برای سنجش اعتبار و ارزیابی ریسک اشخاص در حوزه صدور و مدیریت چک طراحی شده است. این گزارش با نمایش سوابق مرب",
+          "magic_names": [
+            "CREDIT_SCORE_GAUGE"
+          ]
+        },
+        {
+          "i": 2,
+          "question": "رتبه آبی یعنی چه؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "رتبه آبی در مدلهای اعتبارسنجی نشاندهنده بالاترین سطح کیفیت اعتباری و کمریسکترین گروه است. بسته به نوع گزارش، معنای این رتبه به شرح زیر است: ",
+          "new_head": "رتبه آبی در مدل اعتبارسنجی، نشاندهنده بالاترین سطح رتبهبندی و کمریسکترین گروه است. بسته به نوع گزارش، این رتبه معانی متفاوتی دارد: در گزارش ",
+          "magic_names": [
+            "CREDIT_SCORE_GAUGE"
+          ]
+        },
+        {
+          "i": 3,
+          "question": "چطور امتیاز اعتباری را بهبود دهم؟",
+          "gold_fr": "clarify",
+          "new_fr": "clarify",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "برای بهبود امتیاز اعتباری اشخاص حقیقی، تمرکز بر انضباط مالی و مدیریت صحیح تعهدات ضروری است. بر اساس مدل اعتبارسنجی، موارد زیر بر افزایش امتی",
+          "new_head": "برای بهبود امتیاز اعتباری اشخاص حقیقی، تمرکز بر انضباط مالی و کاهش عوامل ریسکزا ضروری است. بر اساس مدل اعتبارسنجی، اقدامات زیر در افزایش امت",
+          "magic_names": [
+            "CLARIFY_OPTIONS"
+          ]
+        },
+        {
+          "i": 4,
+          "question": "نردبان اعتباری چیست؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "نردبان اعتباری بستری است که با هدف معرفی راهکارها و طرحهای موجود برای بهبود وضعیت و رتبه اعتباری طراحی شده است. از طریق این سامانه، کاربران ",
+          "new_head": "نردبان اعتباری بستری است که با هدف معرفی راهکارها و طرحهای موجود برای بهبود وضعیت و رتبه اعتباری طراحی شده است. از طریق این سامانه، کاربران ",
+          "magic_names": [
+            "CREDIT_SCORE_BANDS"
+          ]
+        },
+        {
+          "i": 5,
+          "question": "تسهیلات اشخاص حقیقی چه اطلاعاتی دارد؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": false,
+          "payload_magic": false,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "گزارش اعتبارسنجی تسهیلات برای اشخاص حقیقی شامل مجموعهای از اطلاعات هویتی، امتیاز اعتباری و دلایل احتمالی کاهش این امتیاز است. همچنین سوابق م",
+          "new_head": "گزارش اعتبارسنجی تسهیلات برای اشخاص حقیقی شامل مجموعهای از اطلاعات هویتی، امتیاز اعتباری و دلایل احتمالی کاهش این امتیاز است. همچنین سوابق م",
+          "magic_names": []
+        },
+        {
+          "i": 6,
+          "question": "اعتبارسنجی چیست؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": false,
+          "payload_magic": false,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "اعتبارسنجی به معنای سنجش میزان اعتماد به اشخاص و شرکتها در انجام تعاملات مالی با آنها است. در گذشته این شناخت بر اساس آشناییهای شخصی و تجربی",
+          "new_head": "اعتبارسنجی به معنای سنجش میزان اعتماد به اشخاص و شرکتها در انجام تعاملات مالی است. در گذشته این شناخت بر اساس آشناییهای شخصی و تجربیات فردی ",
+          "magic_names": []
+        },
+        {
+          "i": 7,
+          "question": "کفیل اعتباری کیست؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": false,
+          "payload_magic": false,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "اعتبارسنجی کفیل فرآیندی است که در آن توانایی مالی و سوابق ایفای تعهدات شخص کفیل ارزیابی میشود. هدف از این ارزیابی، اطمینان از این است که کفی",
+          "new_head": "اعتبارسنجی کفیل فرآیندی است که در آن توانایی مالی و سوابق ایفای تعهدات یک شخص ارزیابی میشود تا مشخص گردد آیا وی صلاحیت لازم برای پذیرش کفالت",
+          "magic_names": []
+        },
+        {
+          "i": 8,
+          "question": "چک برگشتی چه تاثیری روی رتبه دارد؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "سابقه برگشت خوردن هر نوع چکی، از جمله چکهای تضمینی، حسابهای مشترک و حتی چکهای شرکتی (به دلیل مسئولیت شخصی امضاکننده)، منجر به کاهش امتیاز و ",
+          "new_head": "هرگونه سابقه برگشت خوردن چک، فارغ از نوع آن (حتی چکهای تضمینی یا چکهای مربوط به حسابهای مشترک و شرکتها)، باعث کاهش رتبه و امتیاز اعتباری شخص",
+          "magic_names": [
+            "CREDIT_SCORE_GAUGE"
+          ]
+        },
+        {
+          "i": 9,
+          "question": "امتیاز اعتباری چگونه محاسبه می‌شود؟",
+          "gold_fr": "clarify",
+          "new_fr": "clarify",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "امتیاز اعتباری اشخاص حقیقی بر اساس تحلیل رفتارهای مالی و سوابق اعتباری فرد محاسبه میشود تا میزان خوشحسابی و اعتبار مالی او تعیین گردد. این ا",
+          "new_head": "امتیاز اعتباری اشخاص حقیقی بر اساس تحلیل رفتارهای مالی و سوابق اعتباری فرد محاسبه میشود تا میزان خوشحسابی، اعتبار مالی و احتمال بازپرداخت تس",
+          "magic_names": [
+            "CREDIT_SCORE_GAUGE"
+          ]
+        },
+        {
+          "i": 10,
+          "question": "تسهیلات اشخاص حقوقی شامل چیست؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": false,
+          "payload_magic": false,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "گزارش اعتبارسنجی تسهیلات برای اشخاص حقوقی شامل مجموعهای از اطلاعات هویتی و مالی است. این گزارش مواردی نظیر امتیاز اعتباری، دلایل کاهش این ام",
+          "new_head": "گزارش اعتبارسنجی تسهیلات برای اشخاص حقوقی و حقیقی شامل مجموعهای از اطلاعات هویتی، امتیاز اعتباری و دلایل احتمالی کاهش این امتیاز است. همچنین",
+          "magic_names": []
+        },
+        {
+          "i": 11,
+          "question": "رتبه زرد به چه معناست؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "رتبه زرد در مدل اعتبارسنجی تسهیلات اشخاص حقیقی، نشاندهنده سطح میانی رتبهبندی است که در دستهبندی مناسب قرار میگیرد. این رتبه به افرادی تعلق د",
+          "new_head": "رتبه زرد در مدل اعتبارسنجی تسهیلات اشخاص حقیقی، نشاندهنده رتبه C است که در دستهبندی مناسب قرار میگیرد. این رتبه سطح میانی رتبهبندی را تشکیل ",
+          "magic_names": [
+            "CREDIT_SCORE_GAUGE"
+          ]
+        },
+        {
+          "i": 12,
+          "question": "چگونه سوابق منفی را رفع کنم؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "سوابق منفی اعتباری اعم از چکهای برگشتی، تأخیر در بازپرداخت اقساط تسهیلات، بدهیهای مالیاتی و محکومیتهای مالی، طبق مقررات در بازه زمانی ۵ سال ",
+          "new_head": "سوابق منفی اعتباری، اعم از چکهای برگشتی، تأخیر در پرداخت اقساط تسهیلات و بدهیهای مالیاتی، طبق مقررات به مدت ۵ سال در گزارش اعتباری باقی میما",
+          "magic_names": [
+            "CREDIT_SCORE_GAUGE"
+          ]
+        }
+      ],
+      "pass": false
+    },
+    {
+      "n": 50,
+      "gold_suffix": "_after",
+      "new_suffix": "_magic",
+      "counts": {
+        "questions": 50,
+        "regressions": 0,
+        "improvements": 1,
+        "still_bad": 0,
+        "fr_drift": 0,
+        "text_drift": 48,
+        "exact_or_magic_ok": 27,
+        "with_magic": 52,
+        "body_polluted": 0
+      },
+      "regressions": [],
+      "improvements": [
+        {
+          "i": 21,
+          "question": "تفاوت اعتبارسنجی حقیقی و حقوقی چیست؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": true,
+          "new_bad": false,
+          "had_magic": false,
+          "payload_magic": false,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "بر اساس اطلاعات موجود در پایگاه دانش، پاسخی برای این سوال یافت نشد.",
+          "new_head": "اعتبارسنجی اشخاص حقیقی و حقوقی (شرکتها و کسبوکارها) با یکدیگر تفاوت دارد. این تفاوت عمدتاً در نوع اطلاعات مورد استفاده و همچنین روش محاسبه ا",
+          "magic_names": []
+        }
+      ],
+      "still_bad": [],
+      "fr_drift": [],
+      "text_drift_sample": [
+        {
+          "i": 1,
+          "question": "گزارش اعتبارسنجی چک چیست؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "گزارش اعتبارسنجی چک ابزاری است که برای سنجش اعتبار و ارزیابی ریسک اشخاص در حوزه صدور و مدیریت چک طراحی شده است. این گزارش با ارائه سوابق مرب",
+          "new_head": "گزارش اعتبارسنجی چک ابزاری است که برای سنجش اعتبار و ارزیابی ریسک اشخاص در حوزه صدور و مدیریت چک طراحی شده است. این گزارش با نمایش سوابق مرب",
+          "magic_names": [
+            "CREDIT_SCORE_GAUGE"
+          ]
+        },
+        {
+          "i": 2,
+          "question": "رتبه آبی یعنی چه؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "رتبه آبی در سیستم اعتبارسنجی، نشاندهنده بالاترین سطح رتبهبندی است که به کمریسکترین گروه مشتریان تعلق میگیرد. بسته به نوع گزارش، این رتبه معا",
+          "new_head": "رتبه آبی در سیستم اعتبارسنجی، نشاندهنده بالاترین سطح رتبهبندی و وضعیت ممتاز است. بسته به نوع گزارش، این رتبه معانی متفاوتی دارد: در گزارش اع",
+          "magic_names": [
+            "CREDIT_SCORE_GAUGE"
+          ]
+        },
+        {
+          "i": 3,
+          "question": "چطور امتیاز اعتباری را بهبود دهم؟",
+          "gold_fr": "clarify",
+          "new_fr": "clarify",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "برای بهبود امتیاز اعتباری اشخاص حقیقی، تمرکز بر انضباط مالی و مدیریت صحیح تعهدات ضروری است. بر اساس معیارهای اعتبارسنجی، اقدامات زیر بر افزا",
+          "new_head": "برای بهبود امتیاز اعتباری اشخاص حقیقی، تمرکز بر انضباط مالی و مدیریت صحیح تعهدات ضروری است. بر اساس مدل اعتبارسنجی، اقدامات زیر بر افزایش ام",
+          "magic_names": [
+            "CLARIFY_OPTIONS"
+          ]
+        },
+        {
+          "i": 4,
+          "question": "نردبان اعتباری چیست؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "نردبان اعتباری بستری است که با هدف معرفی راهکارها و طرحهای موجود برای بهبود وضعیت و رتبه اعتباری طراحی شده است. در این سامانه، کاربران میتوا",
+          "new_head": "نردبان اعتباری بستری است که با هدف معرفی راهکارها و طرحهای موجود برای بهبود وضعیت و رتبه اعتباری طراحی شده است. از طریق این سامانه، کاربران ",
+          "magic_names": [
+            "CREDIT_SCORE_BANDS"
+          ]
+        },
+        {
+          "i": 5,
+          "question": "تسهیلات اشخاص حقیقی چه اطلاعاتی دارد؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": false,
+          "payload_magic": false,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "گزارش اعتبارسنجی تسهیلات برای اشخاص حقیقی شامل اطلاعات هویتی (مانند نام، کد ملی و تاریخ تولد)، امتیاز اعتباری و دلایل احتمالی کاهش این امتیا",
+          "new_head": "گزارش اعتبارسنجی تسهیلات برای اشخاص حقیقی شامل اطلاعات هویتی (مانند نام، کد ملی و تاریخ تولد)، امتیاز اعتباری و دلایل احتمالی کاهش این امتیا",
+          "magic_names": []
+        },
+        {
+          "i": 6,
+          "question": "اعتبارسنجی چیست؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": false,
+          "payload_magic": false,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "اعتبارسنجی به معنای سنجش میزان اعتماد به اشخاص و شرکتها در انجام تعاملات مالی است. در گذشته این شناخت بر اساس آشناییهای شخصی و تجربیات فردی ",
+          "new_head": "اعتبارسنجی به معنای سنجش میزان اعتماد به اشخاص و شرکتها در انجام تعاملات مالی با آنها است. در گذشته این شناخت بر اساس آشناییهای شخصی و تجربی",
+          "magic_names": []
+        },
+        {
+          "i": 7,
+          "question": "کفیل اعتباری کیست؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": false,
+          "payload_magic": false,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "اعتبارسنجی کفیل فرآیندی است که در آن توانایی مالی و سوابق ایفای تعهدات شخص کفیل ارزیابی میشود. هدف از این بررسی، اطمینان از ملائت (توانایی م",
+          "new_head": "اعتبارسنجی کفیل فرآیندی است که در آن توانایی مالی و سوابق ایفای تعهدات شخص کفیل مورد ارزیابی قرار میگیرد. هدف از این بررسی، اطمینان از این ا",
+          "magic_names": []
+        },
+        {
+          "i": 8,
+          "question": "چک برگشتی چه تاثیری روی رتبه دارد؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "سابقه برگشت خوردن هر نوع چکی، از جمله چکهای تضمینشده (ضمانت) یا چکهای مربوط به حسابهای مشترک و شرکتها، مستقیماً باعث کاهش رتبه و امتیاز اعتب",
+          "new_head": "سابقه برگشت خوردن هر نوع چکی، اعم از چکهای شخصی، شرکتی یا حسابهای مشترک، مستقیماً باعث کاهش امتیاز و رتبه اعتباری فرد میشود. در این میان، تن",
+          "magic_names": [
+            "CREDIT_SCORE_GAUGE"
+          ]
+        },
+        {
+          "i": 9,
+          "question": "امتیاز اعتباری چگونه محاسبه می‌شود؟",
+          "gold_fr": "clarify",
+          "new_fr": "clarify",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "امتیاز اعتباری اشخاص حقیقی بر اساس تحلیل رفتارهای مالی و سوابق اعتباری فرد محاسبه میشود تا میزان خوشحسابی، اعتبار مالی و احتمال بازپرداخت تس",
+          "new_head": "امتیاز اعتباری اشخاص حقیقی بر اساس تحلیل جامع رفتار مالی و سوابق اعتباری فرد محاسبه میشود تا میزان خوشحسابی و اعتبار مالی او تعیین گردد. این",
+          "magic_names": [
+            "CREDIT_SCORE_GAUGE"
+          ]
+        },
+        {
+          "i": 10,
+          "question": "تسهیلات اشخاص حقوقی شامل چیست؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": false,
+          "payload_magic": false,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "گزارش اعتبارسنجی تسهیلات برای اشخاص حقوقی شامل مجموعهای از اطلاعات هویتی و مالی است. این گزارش مواردی نظیر امتیاز و رتبه اعتباری، دلایل احتم",
+          "new_head": "گزارش اعتبارسنجی تسهیلات برای اشخاص حقوقی شامل مجموعهای از اطلاعات هویتی و مالی است. این گزارش مواردی نظیر امتیاز و رتبه اعتباری، دلایل احتم",
+          "magic_names": []
+        },
+        {
+          "i": 11,
+          "question": "رتبه زرد به چه معناست؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "رتبه زرد در مدل اعتبارسنجی تسهیلات اشخاص حقیقی، نشاندهنده رتبه مناسب و سطح میانی رتبهبندی است. این رتبه شامل زیرگروههای C1، C2 و C3 است و با",
+          "new_head": "رتبه زرد در مدل اعتبارسنجی تسهیلات اشخاص حقیقی، نشاندهنده رتبه مناسب و سطح ریسک متوسط است. این رتبه در سطح میانی رتبهبندی قرار دارد و شامل ز",
+          "magic_names": [
+            "CREDIT_SCORE_GAUGE"
+          ]
+        },
+        {
+          "i": 12,
+          "question": "چگونه سوابق منفی را رفع کنم؟",
+          "gold_fr": "stop",
+          "new_fr": "stop",
+          "gold_bad": false,
+          "new_bad": false,
+          "had_magic": true,
+          "payload_magic": true,
+          "body_polluted": false,
+          "text_equal_stripped": false,
+          "gold_head": "سوابق منفی اعتباری، اعم از چکهای برگشتی، تأخیر در بازپرداخت اقساط، بدهیهای مالیاتی یا محکومیتهای مالی، طبق مقررات به مدت ۵ سال در گزارش اعتب",
+          "new_head": "سوابق منفی اعتباری، اعم از چکهای برگشتی، تأخیر در پرداخت اقساط یا بدهیهای مالیاتی، طبق مقررات به مدت ۵ سال در گزارش اعتباری باقی میمانند. به",
+          "magic_names": [
+            "CREDIT_SCORE_GAUGE"
+          ]
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "pass": false,
+  "total_regressions": 1
+}
