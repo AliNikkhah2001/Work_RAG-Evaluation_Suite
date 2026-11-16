@@ -64,49 +64,74 @@ QUESTIONS = [
 ]
 
 
-def call_stream(base: str, thread: str, messages: list, timeout: float):
+def call_stream(base: str, thread: str, messages: list, timeout: float, retries: int = 2):
     body = json.dumps(
         {"model": "gemma-4-31b", "stream": True, "messages": messages},
         ensure_ascii=False,
     ).encode("utf-8")
-    req = urllib.request.Request(
-        f"{base.rstrip('/')}/v1/chat/completions",
-        data=body,
-        method="POST",
-        headers={
-            "Content-Type": "application/json",
-            "X-Request-ID": thread,
-        },
-    )
-    t0 = time.time()
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        raw = resp.read().decode("utf-8", errors="replace")
-    dt = time.time() - t0
-    content_parts = []
-    finish = None
-    for line in raw.splitlines():
-        if not line.startswith("data:"):
-            continue
-        payload = line[5:].strip()
-        if payload == "[DONE]":
-            break
+    last_exc: Exception | None = None
+    for attempt in range(retries + 1):
+        req = urllib.request.Request(
+            f"{base.rstrip('/')}/v1/chat/completions",
+            data=body,
+            method="POST",
+            headers={
+                "Content-Type": "application/json",
+                "X-Request-ID": f"{thread}-a{attempt}",
+            },
+        )
+        t0 = time.time()
         try:
-            d = json.loads(payload)
-        except json.JSONDecodeError:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                raw = resp.read().decode("utf-8", errors="replace")
+        except Exception as e:
+            last_exc = e
+            time.sleep(1.5 * (attempt + 1))
             continue
-        ch = (d.get("choices") or [{}])[0]
-        delta = ch.get("delta") or {}
-        if delta.get("content"):
-            content_parts.append(delta["content"])
-        if ch.get("finish_reason"):
-            finish = ch.get("finish_reason")
-    content = "".join(content_parts)
-    return content, finish, dt, len(json.dumps(messages, ensure_ascii=False))
+        dt = time.time() - t0
+        content_parts = []
+        finish = None
+        magic = None
+        for line in raw.splitlines():
+            if not line.startswith("data:"):
+                continue
+            payload = line[5:].strip()
+            if payload == "[DONE]":
+                break
+            try:
+                d = json.loads(payload)
+            except json.JSONDecodeError:
+                continue
+            ch = (d.get("choices") or [{}])[0]
+            delta = ch.get("delta") or {}
+            if delta.get("content"):
+                content_parts.append(delta["content"])
+            if ch.get("finish_reason"):
+                finish = ch.get("finish_reason")
+            rag = d.get("rag") if isinstance(d, dict) else None
+            if isinstance(rag, dict) and rag.get("magic"):
+                magic = rag.get("magic")
+        content = "".join(content_parts)
+        # Retry transient processing failures from upstream KB blips
+        if finish == "error" or "خطا در پردازش" in content:
+            if attempt < retries:
+                time.sleep(1.5 * (attempt + 1))
+                continue
+        return content, finish, dt, len(json.dumps(messages, ensure_ascii=False)), magic
+    if last_exc:
+        raise last_exc
+    return "خطا در پردازش درخواست.", "error", 0.0, len(json.dumps(messages, ensure_ascii=False)), None
+
+
+def _strip_magic(text: str) -> str:
+    """Ignore <<<MAGIC:...>>> payloads when routing clarify auto-replies."""
+    return re.sub(r"<<<MAGIC:[A-Z][A-Z0-9_]*\s*[\s\S]*?>>>", "", text or "").strip()
 
 
 def pick_clarify_reply(clarify_text: str, prior_user_q: str) -> str:
     """Choose a short subspace declaration for a clarify prompt."""
-    c = clarify_text or ""
+    # MAGIC clarify cards embed «چک»/«تسهیلات» JSON and must not steer routing.
+    c = _strip_magic(clarify_text)
     q = prior_user_q or ""
     blob = c + " " + q
 
@@ -229,10 +254,11 @@ def main():
             "ans_chars": 0,
             "assessment": None,
             "clarify_reply": None,
+            "magic": None,
             "exception": None,
         }
         try:
-            content, fr, dt, payload_chars = call_stream(
+            content, fr, dt, payload_chars, magic = call_stream(
                 args.base, thread, messages, args.timeout
             )
             err = ("خطا در پردازش" in (content or "")) or fr == "error"
@@ -245,6 +271,7 @@ def main():
                     "payload_chars": payload_chars,
                     "ans_chars": len(content or ""),
                     "assessment": assess_turn(q, content or "", fr),
+                    "magic": magic,
                 }
             )
             messages.append({"role": "assistant", "content": content or ""})
@@ -275,11 +302,12 @@ def main():
                     "ans_chars": 0,
                     "assessment": None,
                     "clarify_reply": None,
+                    "magic": None,
                     "in_response_to": q,
                     "exception": None,
                 }
                 try:
-                    c2, fr2, dt2, payload2 = call_stream(
+                    c2, fr2, dt2, payload2, magic2 = call_stream(
                         args.base, thread, messages, args.timeout
                     )
                     err2 = ("خطا در پردازش" in (c2 or "")) or fr2 == "error"
@@ -292,6 +320,7 @@ def main():
                             "payload_chars": payload2,
                             "ans_chars": len(c2 or ""),
                             "assessment": assess_turn(q, c2 or "", fr2),
+                            "magic": magic2,
                         }
                     )
                     messages.append({"role": "assistant", "content": c2 or ""})

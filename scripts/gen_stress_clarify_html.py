@@ -138,7 +138,7 @@ def render_answer_block(label: str, t: dict | None, side: str) -> str:
 </div>'''
 
 
-def cards(plist, title, cls, n):
+def cards(plist, title, cls, n, before_label: str, after_label: str):
     if not plist:
         return f'<h3 class="{cls}">{esc(title)} (۰)</h3>'
     parts = [f'<h3 class="{cls}">{esc(title)} ({len(plist)})</h3>']
@@ -156,16 +156,22 @@ def cards(plist, title, cls, n):
                 <p class="delta">قبل: <b>{esc(why_b)}</b> → بعد: <b>{esc(why_a)}</b></p>
               </header>
               <div class="cols">
-                {render_answer_block("پاسخ قدیم (قبل از فیکس)", be, "before")}
-                {render_answer_block("پاسخ جدید (بعد از فیکس)", ae, "after")}
+                {render_answer_block(before_label, be, "before")}
+                {render_answer_block(after_label, ae, "after")}
               </div>
             </article>'''
         )
     return "\n".join(parts)
 
 
-def suite_section(n: int) -> str:
-    before, after = load(n, ""), load(n, "_after")
+def suite_section(
+    n: int,
+    before_suffix: str = "",
+    after_suffix: str = "_after",
+    before_label: str = "پاسخ قدیم (قبل از فیکس)",
+    after_label: str = "پاسخ جدید (بعد از فیکس)",
+) -> str:
+    before, after = load(n, before_suffix), load(n, after_suffix)
     pairs = pair_turns(before, after)
     improved = [p for p in pairs if p["status"] == "improved"]
     still = [p for p in pairs if p["status"] == "still_bad"]
@@ -182,10 +188,10 @@ def suite_section(n: int) -> str:
     </div>
     """
     body = summary
-    body += cards(improved, "بهبود یافته — قبلاً غلط، الان درست/بهتر", "improved-h", n)
-    body += cards(still, "هنوز ضعیف در هر دو", "still-h", n)
-    body += cards(regressed, "پسرفت (قبلاً بهتر)", "reg-h", n)
-    body += cards(ok, "سالم در هر دو اجرا (مرجع)", "ok-h", n)
+    body += cards(improved, "بهبود یافته — قبلاً غلط، الان درست/بهتر", "improved-h", n, before_label, after_label)
+    body += cards(still, "هنوز ضعیف در هر دو", "still-h", n, before_label, after_label)
+    body += cards(regressed, "پسرفت (قبلاً بهتر)", "reg-h", n, before_label, after_label)
+    body += cards(ok, "سالم در هر دو اجرا (مرجع)", "ok-h", n, before_label, after_label)
     return f'''
     <section class="suite" id="suite-{n}">
       <h2>بسته {n} نوبت (clarify-aware)</h2>
@@ -196,18 +202,51 @@ def suite_section(n: int) -> str:
 
 
 def main() -> None:
-    suites_html = "\n".join(suite_section(n) for n in (30, 40, 50))
+    import argparse
+
+    ap = argparse.ArgumentParser(description="Generate RTL before/after HTML for stress clarify.")
+    ap.add_argument(
+        "--mode",
+        choices=("qa-fix", "magic-parity"),
+        default="magic-parity",
+        help="qa-fix: baseline vs _after; magic-parity: _after (gold) vs _magic (current)",
+    )
+    ap.add_argument("--out", type=Path, default=OUT)
+    args = ap.parse_args()
+
+    if args.mode == "magic-parity":
+        before_suffix, after_suffix = "_after", "_magic"
+        before_label = "پاسخ قدیم (baseline بعد از فیکس QA — بدون جادو)"
+        after_label = "پاسخ جدید (اجرای فعلی + MAGIC)"
+        hero_blurb = (
+            "مقایسهٔ baseline پایدار (_after) با اجرای فعلی پس از افزودن MAGIC tokens. "
+            "پاسخ‌ها باید از نظر کیفیت برابر باشند؛ تفاوت مجاز فقط ویجت‌های جادویی است."
+        )
+        footer_src = "stress_clarify_*{_after,_magic}.json"
+    else:
+        before_suffix, after_suffix = "", "_after"
+        before_label = "پاسخ قدیم (قبل از فیکس)"
+        after_label = "پاسخ جدید (بعد از فیکس)"
+        hero_blurb = (
+            "همان بستهٔ سؤال‌ها روی dana-local قبل و بعد از فیکس‌های QA-loop "
+            "(orchestrator #26/#27/#29/#30 · guardrails #9/#11)."
+        )
+        footer_src = "stress_clarify_*{{,_after}}.json"
+
+    suites_html = "\n".join(
+        suite_section(n, before_suffix, after_suffix, before_label, after_label) for n in (30, 40, 50)
+    )
     total_imp = total_still = total_reg = 0
     rows = []
     for n in (30, 40, 50):
-        pairs = pair_turns(load(n, ""), load(n, "_after"))
+        pairs = pair_turns(load(n, before_suffix), load(n, after_suffix))
         imp = sum(1 for p in pairs if p["status"] == "improved")
         stil = sum(1 for p in pairs if p["status"] == "still_bad")
         reg = sum(1 for p in pairs if p["status"] == "regressed")
         total_imp += imp
         total_still += stil
         total_reg += reg
-        b, a = load(n, ""), load(n, "_after")
+        b, a = load(n, before_suffix), load(n, after_suffix)
         rows.append(
             f"<tr><td>{n}</td><td>{b.get('avg_reasonableness')} → <b>{a.get('avg_reasonableness')}</b></td>"
             f"<td>{b.get('flag_counts',{}).get('content_filter',0)} → {a.get('flag_counts',{}).get('content_filter',0)}</td>"
@@ -271,7 +310,7 @@ footer {{ max-width:1100px; margin:2rem auto; color:var(--muted); font-size:.85r
 <body>
 <header class="hero">
   <h1>مقایسه پاسخ‌های قدیمی و جدید — استرس Clarify ۳۰ / ۴۰ / ۵۰</h1>
-  <p>همان بستهٔ سؤال‌ها روی dana-local قبل و بعد از فیکس‌های QA-loop (orchestrator #26/#27/#29/#30 · guardrails #9/#11).</p>
+  <p>{esc(hero_blurb)}</p>
   <p>پاسخ‌های غلط قبلی و موارد بهبودیافته هایلایت شده‌اند؛ متن کامل قدیم و جدید کنار هم آمده است.</p>
 </header>
 <nav>
@@ -292,15 +331,19 @@ footer {{ max-width:1100px; margin:2rem auto; color:var(--muted); font-size:.85r
 </table>
 {suites_html}
 <footer>
-  منبع: <code>datasets/stress/results/stress_clarify_*{{,_after}}.json</code> ·
-  بازتولید: <code>python scripts/gen_stress_clarify_html.py</code>
+  منبع: <code>datasets/stress/results/{esc(footer_src)}</code> ·
+  بازتولید: <code>python scripts/gen_stress_clarify_html.py --mode {esc(args.mode)}</code>
 </footer>
 </body>
 </html>
 '''
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(doc, encoding="utf-8")
-    print(f"WROTE {OUT} ({OUT.stat().st_size} bytes) improved={total_imp} still={total_still} reg={total_reg}")
+    out_path = args.out
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(doc, encoding="utf-8")
+    print(
+        f"WROTE {out_path} ({out_path.stat().st_size} bytes) mode={args.mode} "
+        f"improved={total_imp} still={total_still} reg={total_reg}"
+    )
 
 
 if __name__ == "__main__":
