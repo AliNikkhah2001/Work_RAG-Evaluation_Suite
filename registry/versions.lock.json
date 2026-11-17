@@ -1,0 +1,47 @@
+{
+  "_comment": "Versions this suite set was last validated against. `run_suite.py --check-stale` compares these to the live pins; a mismatch fails the run so stale tests cannot pass silently. Regenerate with: python scripts/run_suite.py --repin",
+  "registry_version": 1,
+  "pinned_at_utc": "2026-11-17T14:40:00Z",
+  "knowledgebase": {
+    "corpus_date": "1405-08-20",
+    "manifest_id": "kb-20261117T132201Z",
+    "documents": 18,
+    "chunks": 1204,
+    "entity_lists": 12,
+    "packs": {
+      "schemas": "1.0.2",
+      "taxonomy": "1.0.3",
+      "canned": "1.0.2",
+      "prompts_orchestrator": "1.0.7",
+      "prompts_guardrails": "1.0.1",
+      "retrieval": "1.0.3"
+    }
+  },
+  "models": {
+    "llm": {
+      "id": "unsloth/gemma-4-31B-it-GGUF:UD-Q4_K_XL",
+      "revision": "c1ac76e99d5513b141e8adde7288b85c3f9c32ec",
+      "file": "gemma-4-31B-it-UD-Q4_K_XL.gguf",
+      "ctx_size": 8192
+    },
+    "embedding": {
+      "id": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+      "dim": 384
+    }
+  },
+  "suites": {
+    "kb-unit": { "validated_against": "kb-20261117T132201Z", "count": 194 },
+    "orchestrator-unit": { "validated_against": "kb-20261117T132201Z", "count": 81 },
+    "guardrails-unit": { "validated_against": "kb-20261117T132201Z", "count": 56 },
+    "evaluation-unit": { "validated_against": "kb-20261117T132201Z", "count": null },
+    "multiturn-core": { "validated_against": "kb-20261117T132201Z", "count": 12 },
+    "multiturn-reason-codes": { "validated_against": "kb-20261117T132201Z", "count": 20 },
+    "magic-fire": { "validated_against": "kb-20261117T132201Z", "count": 109 },
+    "hitk-retrieval": { "validated_against": "kb-20261117T132201Z", "count": 82 },
+    "stress-clarify-30": { "validated_against": "kb-20261117T132201Z", "count": 30 },
+    "stress-clarify-40": { "validated_against": "kb-20261117T132201Z", "count": 40 },
+    "stress-clarify-50": { "validated_against": "kb-20261117T132201Z", "count": 50 },
+    "stress-regression": { "validated_against": "kb-20261117T132201Z", "count": null },
+    "e2e-api-smoke": { "validated_against": "kb-20261117T132201Z", "count": null }
+  }
+}
