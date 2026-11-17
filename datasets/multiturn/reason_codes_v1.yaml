@@ -1,0 +1,230 @@
+# Reason-code QA suite — direct, indirect, hierarchical, and cross-model probes.
+#
+# Reason-code catalogs are KB supplements (kind=reason_code_catalog), one per
+# (domain, model), with a clear hierarchy:
+#   کدهای دلیل
+#   ├── گزارش اعتبارسنجی چک                    -> 86 codes  (model=cheque)
+#   └── اعتبارسنجی تسهیلات
+#       ├── اشخاص حقیقی
+#       │   ├── مدل اصلی                        -> 77 codes  (model=person_main)
+#       │   └── مدل جایگزین                     -> 10 codes  (model=person_substitute)
+#       └── اشخاص حقوقی                         -> 23 codes  (model=legal)
+#
+# must_not_contain guards the original regression: a reason-code ask must never
+# be answered with a loan product row from «لیست و عناوین وام ها».
+#
+# Colliding codes (AGE2 main/substitute; NGL1–NGL3 main/legal) must clarify
+# which model instead of answering from one of them.
+
+version: 3
+updated: 2026-11-17
+notes: >
+  Reason-code vocabulary (دلیل / کد دلیل / کد علل / reason code) is in the
+  guardrail domain gate and the ICS allowlist. Exact code asks pin the defining
+  catalog; a code present in >1 model asks which model (expected_finish: clarify).
+
+conversations:
+  # --- direct code ask (individual main model) -----------------------------
+  - id: rc_direct_had1
+    subspace: general
+    description: direct HAD1 lookup must return the HAD1 explanation
+    turns:
+      - user: کد دلیل HAD1 چیست؟
+        expected_finish: stop
+        must_any: ["HAD1", "بدهی", "سررسید"]
+        must_not_contain: ["فهرست عناوین وام", "وام الماس", "طرح مهریار"]
+
+  - id: rc_direct_had1_code_only
+    subspace: general
+    description: bare code token must resolve
+    turns:
+      - user: HAD1
+        expected_finish: stop
+        must_any: ["HAD1", "بدهی", "سررسید"]
+        must_not_contain: ["وام ازدواج"]
+
+  # --- direct code asks per model ------------------------------------------
+  - id: rc_direct_cheque_code
+    subspace: cheque
+    description: cheque-model code DAG1-1 must return the cheque explanation
+    turns:
+      - user: شرح کد دلیل DAG1-1 در مدل چک چیست؟
+        expected_finish: stop
+        expected_subspace: cheque
+        must_any: ["DAG1", "سن", "جوان", "چک"]
+        must_not_contain: ["وام ازدواج"]
+
+  - id: rc_direct_legal_code
+    subspace: general
+    description: legal-model code SBD1 must return the company explanation
+    turns:
+      - user: کد دلیل SBD1 چه معنایی دارد؟
+        expected_finish: stop
+        must_any: ["SBD1", "چک برگشتی", "شرکت"]
+        must_not_contain: ["فهرست عناوین وام", "وام الماس"]
+
+  - id: rc_direct_substitute_code
+    subspace: general
+    description: substitute-model code BCC1 must return the substitute explanation
+    turns:
+      - user: کد دلیل BCC1 چه معنایی دارد؟
+        expected_finish: stop
+        must_any: ["BCC1", "چک برگشتی"]
+        must_not_contain: ["فهرست عناوین وام", "وام الماس"]
+
+  # --- list / catalog asks --------------------------------------------------
+  - id: rc_list_person_main
+    subspace: general
+    description: model-scoped list ask must enumerate the main-model catalog
+    turns:
+      - user: کدهای دلیل مدل اصلی اشخاص حقیقی کدامند؟
+        expected_finish: stop
+        must_any: ["کد", "مدل اصلی"]
+        must_not_contain: ["فهرست عناوین وام", "وام الماس"]
+
+  - id: rc_list_legal
+    subspace: general
+    description: legal list ask must enumerate the legal catalog
+    turns:
+      - user: کدهای دلیل کاهش امتیاز اشخاص حقوقی کدامند؟
+        expected_finish: stop
+        must_any: ["حقوقی", "کد"]
+        must_not_contain: ["فهرست عناوین وام"]
+
+  # --- indirect reason-code asks -------------------------------------------
+  - id: rc_indirect_cheque
+    subspace: cheque
+    description: indirect cheque reason ask
+    turns:
+      - user: چرا امتیاز چک من کم شده؟
+        expected_finish: stop
+        expected_subspace: cheque
+        must_any: ["چک"]
+
+  - id: rc_indirect_cheque_list
+    subspace: cheque
+    description: list-of-reasons ask must enumerate cheque factors
+    turns:
+      - user: دلایل کاهش امتیاز چک چیست؟
+        expected_finish: stop
+        expected_subspace: cheque
+        must_any: ["چک"]
+        must_not_contain: ["فهرست عناوین وام"]
+
+  # --- cross-model: code belongs to a different model -----------------------
+  - id: rc_crossmodel_had1_legal
+    subspace: general
+    description: >
+      HAD1 is an individuals-model code; asked under حقوقی the answer must not
+      invent a legal row or a loan product.
+    turns:
+      - user: کد دلیل HAD1 در مدل اشخاص حقوقی چیست؟
+        expected_finish: stop
+        must_not_contain: ["فهرست عناوین وام", "وام الماس", "طرح مهریار", "وام قرض‌الحسنه اشخاص حقوقی"]
+
+  - id: rc_crossmodel_atx1_person
+    subspace: general
+    description: ATX1 is a legal-model code; asked under حقیقی must not fabricate
+    turns:
+      - user: کد دلیل ATX1 در مدل اشخاص حقیقی چیست؟
+        expected_finish: stop
+        must_not_contain: ["فهرست عناوین وام", "وام الماس", "طرح مهریار"]
+
+  # --- colliding codes must clarify ----------------------------------------
+  - id: rc_collision_age2
+    subspace: general
+    description: AGE2 exists in مدل اصلی and مدل جایگزین → must clarify which model
+    turns:
+      - user: دلیل AGE2 چیست؟
+        expected_finish: clarify
+        must_any: ["مدل اصلی", "مدل جایگزین"]
+
+  - id: rc_collision_ngl1
+    subspace: general
+    description: NGL1 exists in مدل اصلی and اشخاص حقوقی → must clarify which model
+    turns:
+      - user: کد دلیل NGL1 چیست؟
+        expected_finish: clarify
+        must_any: ["حقوقی", "مدل اصلی"]
+
+  # --- hierarchy questions --------------------------------------------------
+  - id: rc_hierarchy_main_vs_substitute
+    subspace: general
+    description: must explain the main vs substitute model split
+    turns:
+      - user: تفاوت کدهای دلیل مدل اصلی و مدل جایگزین چیست؟
+        expected_finish: stop
+        must_any: ["مدل اصلی", "مدل جایگزین"]
+        must_not_contain: ["فهرست عناوین وام"]
+
+  # --- model-switch bleed ---------------------------------------------------
+  - id: rc_model_switch
+    subspace: general
+    description: switch from حقیقی reasons to حقوقی must not leak loan titles
+    turns:
+      - user: دلایل کاهش امتیاز در مدل اشخاص حقیقی چیست؟
+        expected_finish: stop
+      - user: حالا همین را برای مدل اشخاص حقوقی بگو
+        expected_finish: stop
+        must_not_contain: ["فهرست عناوین وام", "وام الماس", "طرح مهریار"]
+
+  # --- colliding codes: model pick resolves (no re-ask, no drift) ----------
+  - id: rc_collision_age2_pick_main
+    subspace: general
+    description: >
+      AGE2 clarify → «مدل اصلی» must answer from person_main (age band) and must
+      not re-ask which model nor answer the substitute row.
+    turns:
+      - user: کد دلیل AGE2 یعنی چه؟
+        expected_finish: clarify
+        must_any: ["مدل اصلی", "مدل جایگزین"]
+      - user: مدل اصلی
+        expected_finish: stop
+        must_any: ["AGE2"]
+        must_not_contain: ["کدام مدل", "مدل مدنظر"]
+
+  - id: rc_collision_age2_pick_substitute
+    subspace: general
+    description: AGE2 clarify → «مدل جایگزین» must answer from person_substitute
+    turns:
+      - user: کد دلیل AGE2 یعنی چه؟
+        expected_finish: clarify
+        must_any: ["مدل اصلی", "مدل جایگزین"]
+      - user: مدل جایگزین
+        expected_finish: stop
+        must_any: ["AGE2"]
+        must_not_contain: ["کدام مدل", "مدل مدنظر"]
+
+  - id: rc_collision_ngl1_pick_legal
+    subspace: general
+    description: NGL1 clarify → «مدل اشخاص حقوقی» must answer from legal
+    turns:
+      - user: کد دلیل NGL1 چیست؟
+        expected_finish: clarify
+        must_any: ["حقوقی", "مدل اصلی"]
+      - user: مدل اشخاص حقوقی
+        expected_finish: stop
+        must_any: ["NGL1"]
+        must_not_contain: ["کدام مدل", "مدل مدنظر"]
+
+  - id: rc_collision_ngl1_pick_main
+    subspace: general
+    description: NGL1 clarify → «مدل اصلی» must answer from person_main (3-year)
+    turns:
+      - user: کد دلیل NGL1 چیست؟
+        expected_finish: clarify
+        must_any: ["حقوقی", "مدل اصلی"]
+      - user: مدل اصلی
+        expected_finish: stop
+        must_any: ["NGL1"]
+        must_not_contain: ["کدام مدل", "مدل مدنظر"]
+
+  # --- single-model code must not be over-clarified ------------------------
+  - id: rc_single_model_no_clarify
+    subspace: general
+    description: AGE3 lives only in person_main → answer directly, never clarify
+    turns:
+      - user: کد دلیل AGE3 یعنی چه؟
+        expected_finish: stop
+        must_any: ["AGE3"]
+        must_not_contain: ["کدام مدل"]
