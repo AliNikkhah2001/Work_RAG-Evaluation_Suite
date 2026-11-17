@@ -1,0 +1,197 @@
+# Canonical test-suite registry for the Work Credit RAG platform.
+#
+# Single source of truth for every runnable suite: what it is, where it lives,
+# how to run it, and what it requires. Nothing here is inferred at runtime —
+# `run_suite.py` and the Jenkins E2E stage both read this file.
+#
+# Kinds
+#   unit        — offline, deterministic, no live stack
+#   integration — needs a live component (KB :8000 and/or orchestrator :8100)
+#   e2e         — needs the full stack
+#
+# `requires` values: none | kb | orch | stack
+#
+# Ownership rule: a suite whose `path` is inside a component repo stays there
+# and is run *in place* with that repo's own rootdir/PYTHONPATH. Only the
+# evaluation-owned integration/e2e suites live in this repo. The registry is
+# what makes them one runnable set.
+
+version: 1
+updated: 2026-11-17
+
+# Where each component repo lives, relative to the umbrella root.
+roots:
+  umbrella: "."
+  knowledgebase: "components/knowledgebase"
+  kb_manager: "components/knowledgebase/kb-manager"
+  orchestrator: "components/orchestrator"
+  guardrails: "components/guardrails"
+  evaluation: "components/evaluation"
+  kb_source: "components/knowledgebase/kb-source"
+
+suites:
+  # ------------------------------------------------------------------ unit --
+  - id: kb-unit
+    name: Knowledgebase manager unit tests
+    kind: unit
+    owner: knowledgebase
+    path: components/knowledgebase/kb-manager/tests
+    runner: pytest
+    rootdir: components/knowledgebase/kb-manager
+    env:
+      PYTHONPATH: "."
+    requires: none
+    tags: [kb, ingestion, retrieval, chunking, entity-lists]
+    description: >
+      Parser, chunker, preprocessor, embedder, pipeline, registry, DVC snapshot,
+      entity-list (reason-code catalog) and CLI tests for kb-manager.
+
+  - id: orchestrator-unit
+    name: Orchestrator unit tests
+    kind: unit
+    owner: orchestrator
+    path: components/orchestrator/tests
+    runner: pytest
+    rootdir: components/orchestrator
+    env:
+      PYTHONPATH: "src"
+    requires: none
+    tags: [orchestrator, routing, clarify, subspace, magic]
+    description: >
+      Subspace routing, product-question routing, clarify/abstention, memory
+      coref, progressive broaden, magic emit and prompt-registry tests.
+
+  - id: guardrails-unit
+    name: Guardrails unit tests
+    kind: unit
+    owner: guardrails
+    path: components/guardrails/tests
+    runner: pytest
+    rootdir: components/guardrails
+    env:
+      PYTHONPATH: "src"
+    requires: none
+    tags: [guardrails, policy, allowlist, injection, domain-gate]
+    description: >
+      Input rails, ICS domain gate, HurtLex allowlist and prompt-injection
+      regex regression tests.
+
+  - id: evaluation-unit
+    name: Evaluation registry self-tests
+    kind: unit
+    owner: evaluation
+    path: components/evaluation/tests
+    runner: pytest
+    rootdir: components/evaluation
+    env:
+      PYTHONPATH: "src"
+    requires: none
+    tags: [evaluation, registry]
+    description: Registry loading, suite resolution and staleness detection.
+
+  # ----------------------------------------------------------- integration --
+  - id: multiturn-core
+    name: Multi-turn core (subspace / sticky / clarify)
+    kind: integration
+    owner: evaluation
+    path: components/evaluation/datasets/multiturn/conversations_v1.yaml
+    runner: run_multiturn
+    requires: orch
+    tags: [multiturn, clarify, sticky, subspace]
+    description: >
+      Curated multi-turn conversations covering clarify, sticky subspace,
+      re-specification, greeting, off-topic, FAQ and supplements.
+
+  - id: multiturn-reason-codes
+    name: Multi-turn reason codes (hierarchy + cross-model)
+    kind: integration
+    owner: evaluation
+    path: components/evaluation/datasets/multiturn/reason_codes_v1.yaml
+    runner: run_multiturn
+    requires: orch
+    tags: [multiturn, reason-codes, ambiguity, cross-model]
+    description: >
+      Direct, bare-token, per-model, list, indirect, cross-model, collision
+      clarify/resolve, hierarchy and no-over-clarify probes for reason codes.
+
+  - id: magic-fire
+    name: Magic fire (widget should/should-not fire)
+    kind: integration
+    owner: evaluation
+    path: components/evaluation/datasets/magic/magic_fire_v1.jsonl
+    runner: run_magic_fire
+    requires: orch
+    tags: [magic, widgets, judge]
+    description: Curated prompts for which `rag.magic` widgets must/must not fire.
+
+  - id: hitk-retrieval
+    name: Retrieval Hit@k (strict remap)
+    kind: integration
+    owner: evaluation
+    path: components/evaluation/datasets/retrieval/eval_clean_remapped_strict.json
+    runner: run_hitk
+    requires: kb
+    tags: [retrieval, hitk, acceptance]
+    description: >
+      Acceptance Hit@1 / Hit@5 benchmark using the strict min_overlap=0.75
+      answer-as-query remap.
+
+  - id: stress-clarify-30
+    name: Sticky stress 30 turns (clarify-aware)
+    kind: integration
+    owner: evaluation
+    path: components/evaluation/datasets/stress/results/stress_clarify_30.json
+    runner: run_stress_clarify
+    args: ["--turns", "30"]
+    requires: orch
+    tags: [stress, sticky, long-context]
+    description: 30-turn sticky stream with clarify auto-replies.
+
+  - id: stress-clarify-40
+    name: Sticky stress 40 turns (clarify-aware)
+    kind: integration
+    owner: evaluation
+    path: components/evaluation/datasets/stress/results/stress_clarify_40.json
+    runner: run_stress_clarify
+    args: ["--turns", "40"]
+    requires: orch
+    tags: [stress, sticky, long-context]
+    description: 40-turn sticky stream with clarify auto-replies.
+
+  - id: stress-clarify-50
+    name: Sticky stress 50 turns (clarify-aware)
+    kind: integration
+    owner: evaluation
+    path: components/evaluation/datasets/stress/results/stress_clarify_50.json
+    runner: run_stress_clarify
+    args: ["--turns", "50"]
+    requires: orch
+    tags: [stress, sticky, long-context]
+    description: 50-turn sticky stream with clarify auto-replies.
+
+  - id: stress-regression
+    name: Sticky stress hard-case regression pack
+    kind: integration
+    owner: evaluation
+    path: components/evaluation/datasets/stress/results/eval_final_regression.json
+    runner: run_stress_regression
+    requires: orch
+    tags: [stress, regression, judge]
+    description: Hard-case pack with LLM judge over the sticky streams.
+
+  # ------------------------------------------------------------------- e2e --
+  - id: e2e-api-smoke
+    name: E2E API smoke (KB + orchestrator + guardrails)
+    kind: e2e
+    owner: evaluation
+    path: components/evaluation/e2e/test_api_smoke.py
+    runner: pytest
+    rootdir: components/evaluation
+    env:
+      PYTHONPATH: "src"
+    requires: stack
+    tags: [e2e, smoke]
+    description: >
+      End-to-end probe across KB /search/api, orchestrator /v1/chat/completions
+      and guardrails /v1/rails/check. Absorbs the former kb-manager
+      test_endpoints.py and dev/tests scratch scripts.

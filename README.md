@@ -14,12 +14,41 @@ Do not trust prior goldens blindly. See [`docs/AUDIT.md`](docs/AUDIT.md):
 
 ## Suites
 
+The canonical list of every runnable suite — across this repo **and** the KB /
+orchestrator / guardrails repos — lives in
+[`registry/suites.yaml`](registry/suites.yaml), run through
+[`scripts/run_suite.py`](scripts/run_suite.py). See [`registry/README.md`](registry/README.md).
+
+```bash
+python scripts/run_suite.py --list          # all registered suites
+python scripts/run_suite.py --kind unit     # offline suites (kb/orch/guardrails/evaluation)
+python scripts/run_suite.py --check-stale   # fail if pinned KB/model version drifted
+```
+
+Suites declared here and run in place:
+
 | Suite | Entry | What it measures |
 |---|---|---|
 | Magic fire | `python scripts/run_magic_fire.py` | ≥100 curated prompts for which `rag.magic` widgets should/should-not fire |
 | Multi-turn | `python scripts/run_multiturn.py` | clarify, sticky, re-spec, greeting, offtopic, FAQ, supplements |
 | Hit@k | `python scripts/remap_hitk_dataset.py` (+ hygiene) then `python scripts/run_hitk.py` | Hit@1 / Hit@5 after strict answer-as-query remapping |
 | Sticky stress | `python scripts/run_stress_clarify.py` (+ compare / regression) | Long sticky 30/40/50 streams with clarify auto-replies; before→after QA-loop snapshot |
+| E2E smoke | `python scripts/run_suite.py --kind e2e` | KB + orchestrator + guardrails end-to-end |
+
+Suites owned by sibling repos but run through the same registry:
+
+| Suite | Owner | Location |
+|---|---|---|
+| `kb-unit` | knowledgebase | `components/knowledgebase/kb-manager/tests` (193 tests) |
+| `orchestrator-unit` | orchestrator | `components/orchestrator/tests` |
+| `guardrails-unit` | guardrails | `components/guardrails/tests` |
+
+## Version linking
+
+`registry/versions.lock.json` pins the KB snapshot (corpus date, manifest id,
+counts, pack pins) and model versions the suite set was validated against. The
+staleness gate fails the run when the live pins differ, so a KB/model bump can
+never silently pass stale tests. Re-pin with `--repin` only after re-validating.
 
 ## Defaults
 

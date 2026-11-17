@@ -21,3 +21,14 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "e2e"]
+asyncio_mode = "auto"
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+markers = [
+  "integration: needs a live KB (:8000) and/or orchestrator (:8100)",
+  "e2e: needs the full stack",
+]
